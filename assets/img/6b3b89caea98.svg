@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="t">
+  <title id="t">Ahmed Laith logo</title>
+  <g id="symbol">
+    <path id="block" fill="#F7F7F5" fill-rule="evenodd" d="M58.4 12 L244 12 L244 197.6 L230.25 197.6 L163.85 37.31 L138.55 37.31 L72.15 197.6 L58.4 197.6 Z M105.9 197.6 L196.5 197.6 L179.03 155.42 L123.37 155.42 Z M151.2 88.23 L169.42 132.22 L132.98 132.22 Z"/>
+    <path id="l" fill="#FF6A00" d="M49.96 20.44 L12 58.4 L12 244 L197.6 244 L235.56 206.04 L49.96 206.04 Z"/>
+  </g>
+</svg>
