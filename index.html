@@ -2138,38 +2138,93 @@ textarea.input { min-height: 90px; resize: vertical; }
   [data-video-tile]:hover [data-vt-cover] img, [data-video-tile]:focus-visible [data-vt-cover] img { transform: scale(1.04); filter: brightness(1.1); }
   [data-video-tile]:hover [data-vt-play], [data-video-tile]:focus-visible [data-vt-play] { background: #FF6A00; border-color: #FF6A00; color: #1b1c20; }
   [data-video-tile]:focus-visible { outline: 2px solid #FF6A00; outline-offset: 4px; }
+  [data-vsec-nav] { display: flex; flex-wrap: wrap; gap: 8px; padding: clamp(18px, 2.6vw, 26px) clamp(18px, 4vw, 40px) 0; }
+  [data-vsec-nav] a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid rgba(247,247,245,.28); color: #a3a3a6; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; transition: border-color .2s, color .2s; }
+  [data-vsec-nav] a[aria-current="page"] { background: #FF6A00; border-color: #FF6A00; color: #1b1c20; }
+  [data-vsec-nav] a:not([aria-current]):hover { border-color: #FF6A00; color: #FF6A00; }
 
-  /* on-page player */
-  [data-vp] { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; background: rgba(7,7,8,.97); color: #F7F7F5; }
+  /* full-screen player: video as large as the screen allows, a strip for the
+     videos of the current project, and project navigation by name */
+  [data-vp] { position: fixed; inset: 0; z-index: 10001; display: none; flex-direction: column; height: 100vh; height: 100dvh; background: #0b0b0d; color: #F7F7F5; }
   [data-vp][data-open] { display: flex; }
-  [data-vp-head] { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: max(12px, env(safe-area-inset-top)) clamp(14px, 3vw, 28px) 10px; }
-  [data-vp-meta] { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  [data-vp-client] { font-size: 10px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: #FF6A00; }
-  [data-vp-title] { font-size: clamp(16px, 2vw, 20px); font-weight: 700; line-height: 1.3; }
-  [data-vp] button { appearance: none; border: 1px solid rgba(247,247,245,.28); background: rgba(27,28,32,.72); color: #F7F7F5; cursor: pointer; }
-  [data-vp-close], [data-vp-nav] { flex: none; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; font-size: 22px; line-height: 1; }
-  [data-vp-close]:hover, [data-vp-nav]:hover { border-color: #FF6A00; color: #FF6A00; }
-  [data-vp-stage] { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; gap: clamp(8px, 2vw, 24px); padding: 0 clamp(8px, 2vw, 24px); }
-  [data-vp-frame] { position: relative; flex: none; aspect-ratio: 9 / 16; height: min(100%, calc((100vw - 140px) * 16 / 9)); max-height: 100%; background: #000 center / cover no-repeat; border: 1px solid rgba(247,247,245,.12); }
-  [data-vp-frame][data-h] { aspect-ratio: 16 / 9; height: auto; width: min(calc(100vw - 140px), calc((100vh - 200px) * 16 / 9)); }
+  [data-vp] [hidden] { display: none !important; }
+  [data-vp] button { appearance: none; margin: 0; font: inherit; color: inherit; background: transparent; cursor: pointer; }
+  [data-vp] button:focus-visible, [data-vp] a:focus-visible { outline: 2px solid #FF6A00; outline-offset: 2px; }
+  [data-vp-top] { flex: none; display: flex; align-items: center; gap: 12px; padding: max(10px, env(safe-area-inset-top)) clamp(12px, 2.4vw, 24px) 10px; border-bottom: 1px solid rgba(247,247,245,.1); }
+  [data-vp-meta] { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  [data-vp-client] { font-size: 10px; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: #FF6A00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-vp-title] { font-size: clamp(15px, 1.8vw, 19px); font-weight: 700; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-vp-where] { flex: none; font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #a3a3a6; font-variant-numeric: tabular-nums; }
+  [data-vp-icon] { flex: none; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(247,247,245,.28); font-size: 20px; line-height: 1; transition: border-color .2s, color .2s; }
+  [data-vp-icon]:hover { border-color: #FF6A00; color: #FF6A00; }
+  [data-vp-body] { position: relative; flex: 1; min-height: 0; display: flex; }
+  [data-vp-stage] { flex: 1; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2vw, 28px); padding: clamp(10px, 2vh, 22px); container-type: size; }
+  [data-vp-frame] { position: relative; flex: none; height: 100%; aspect-ratio: 9 / 16; height: min(100cqh, calc((100cqw - 150px) * 16 / 9)); background: #000 center / cover no-repeat; }
+  [data-vp-frame][data-h] { aspect-ratio: 16 / 9; height: auto; width: 100%; width: min(calc(100cqw - 150px), calc(100cqh * 16 / 9)); }
   [data-vp-frame] iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  [data-vp-foot] { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; padding: 12px clamp(14px, 3vw, 28px) max(14px, env(safe-area-inset-bottom)); }
+  [data-vp-spin] { position: absolute; left: 50%; top: 50%; z-index: 1; width: 42px; height: 42px; margin: -21px 0 0 -21px; border: 3px solid rgba(247,247,245,.25); border-top-color: #FF6A00; border-radius: 50%; animation: al-spin .8s linear infinite; pointer-events: none; }
+  [data-vp-frame][data-loaded] [data-vp-spin] { display: none; }
+  [data-vp-nav] { flex: none; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(247,247,245,.28); border-radius: 50%; font-size: 26px; line-height: 1; transition: border-color .2s, color .2s, background .2s; }
+  [data-vp-nav]:hover { background: #FF6A00; border-color: #FF6A00; color: #1b1c20; }
+  [data-vp-panel] { flex: none; width: 340px; display: flex; flex-direction: column; gap: 22px; padding: 18px 20px 20px; overflow-y: auto; overscroll-behavior: contain; border-inline-start: 1px solid rgba(247,247,245,.1); }
+  [data-vp-h] { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 10px; font-size: 10px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #8a8a8e; }
   [data-vp-versions] { display: flex; flex-wrap: wrap; gap: 8px; }
-  [data-vp-versions] button { position: relative; width: 44px; height: 78px; padding: 0; background: #25262b center / cover no-repeat; opacity: .55; transition: opacity .2s, border-color .2s; }
-  [data-vp-versions] button[aria-pressed="true"] { opacity: 1; border: 2px solid #FF6A00; }
-  [data-vp-versions] button span { position: absolute; inset-inline-start: 4px; bottom: 3px; font-size: 11px; font-weight: 700; text-shadow: 0 1px 3px #000; }
-  [data-vp-side] { display: flex; align-items: center; gap: 18px; margin-inline-start: auto; font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #a3a3a6; }
-  [data-vp-side] a { color: #a3a3a6; transition: color .2s; }
-  [data-vp-side] a:hover { color: #FF6A00; }
-  [data-vp][dir="rtl"] [data-vp-side], [data-vp][dir="rtl"] [data-vp-client] { letter-spacing: 0; font-size: 13px; }
-  @media (max-width: 640px) {
-    [data-vp-stage] { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(0, 1fr) auto; align-items: center; justify-items: center; gap: 10px; padding: 0 14px; }
-    [data-vp-frame] { grid-column: 1 / -1; grid-row: 1; height: auto; width: min(100%, calc((100vh - 300px) * 9 / 16)); }
-    [data-vp-frame][data-h] { width: 100%; }
-    [data-vp-nav] { grid-row: 2; width: 46px; height: 46px; }
-    [data-vp-nav="prev"] { justify-self: start; }
-    [data-vp-nav="next"] { justify-self: end; }
+  [data-vp-versions] button { position: relative; flex: none; width: 66px; aspect-ratio: 9 / 16; padding: 0; border: 1px solid rgba(247,247,245,.2); background: #25262b center / cover no-repeat; opacity: .6; transition: opacity .2s, border-color .2s; }
+  [data-vp-versions] button:hover { opacity: 1; }
+  [data-vp-versions] button[aria-current="true"] { opacity: 1; border: 2px solid #FF6A00; }
+  [data-vp-versions] button span { position: absolute; inset-inline-start: 0; bottom: 0; padding: 2px 5px; background: rgba(11,11,13,.82); font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  [data-vp-pnav] { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  [data-vp-pnav] button { display: flex; flex-direction: column; justify-content: center; gap: 3px; min-width: 0; min-height: 58px; padding: 8px 12px; border: 1px solid rgba(247,247,245,.2); text-align: start; transition: border-color .2s; }
+  [data-vp-pnav] button[data-dir="next"] { align-items: flex-end; text-align: end; }
+  [data-vp-pnav] button:hover { border-color: #FF6A00; }
+  [data-vp-pnav] small { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #8a8a8e; white-space: nowrap; }
+  [data-vp-pnav] strong { max-width: 100%; font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-vp-sheet-btn] { display: none !important; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 58px; padding: 6px 10px; border: 1px solid rgba(247,247,245,.2); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  [data-vp-sheet-head] { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  [data-vp-sheet-close] { display: none; }
+  [data-vp-tabs] { display: flex; gap: 6px; margin-bottom: 12px; }
+  [data-vp-tabs] button { flex: 1; min-height: 40px; padding: 0 8px; border: 1px solid rgba(247,247,245,.2); color: #a3a3a6; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  [data-vp-tabs] button[aria-selected="true"] { background: #F7F7F5; border-color: #F7F7F5; color: #1b1c20; }
+  [data-vp-pgrid] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 10px; }
+  [data-vp-pgrid] button { display: flex; flex-direction: column; gap: 5px; min-width: 0; padding: 0; border: 0; text-align: start; }
+  [data-vp-pgrid] [data-c] { position: relative; display: block; width: 100%; aspect-ratio: 9 / 16; background: #25262b center / cover no-repeat; border: 1px solid rgba(247,247,245,.12); transition: border-color .2s; }
+  [data-vp-pgrid] button:hover [data-c] { border-color: #FF6A00; }
+  [data-vp-pgrid] button[aria-current="true"] [data-c] { border: 2px solid #FF6A00; }
+  [data-vp-pgrid] button[aria-current="true"] [data-c]::after { content: attr(data-now); position: absolute; inset-inline-start: 0; bottom: 0; padding: 2px 6px; background: #FF6A00; color: #1b1c20; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  [data-vp-pgrid] [data-k] { font-size: 9px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #FF6A00; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  [data-vp-pgrid] [data-n] { font-size: 12px; font-weight: 600; line-height: 1.3; color: #c4c4c6; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  [data-vp-yt] { display: inline-flex; margin-top: 16px; font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #a3a3a6; transition: color .2s; }
+  [data-vp-yt]:hover { color: #FF6A00; }
+  [data-vp][lang="ar"] [data-vp-client], [data-vp][lang="ar"] [data-vp-where], [data-vp][lang="ar"] [data-vp-h],
+  [data-vp][lang="ar"] [data-vp-pnav] small, [data-vp][lang="ar"] [data-vp-tabs] button, [data-vp][lang="ar"] [data-vp-yt],
+  [data-vp][lang="ar"] [data-vp-pgrid] [data-k], [data-vp][lang="ar"] [data-vp-sheet-btn] { letter-spacing: 0; font-size: 12px; }
+  [data-vp]:fullscreen { width: 100vw; height: 100vh; }
+
+  /* phones and portrait tablets: video on top, controls in one bar underneath,
+     the project list opens as a full sheet */
+  @media (max-width: 899px) {
+    [data-vp-body] { flex-direction: column; }
+    [data-vp-stage] { padding: 6px 0; gap: 0; }
+    [data-vp-nav] { display: none; }
+    [data-vp-frame] { height: min(100cqh, calc(100cqw * 16 / 9)); }
+    [data-vp-frame][data-h] { width: min(100cqw, calc(100cqh * 16 / 9)); }
+    [data-vp-panel] { width: auto; gap: 10px; padding: 10px 12px max(12px, env(safe-area-inset-bottom)); overflow: visible; border: 0; border-top: 1px solid rgba(247,247,245,.1); }
+    [data-vp-vsec] { display: flex; align-items: center; gap: 10px; }
+    [data-vp-vsec] [data-vp-h] { flex: none; flex-direction: column; gap: 2px; margin: 0; }
+    [data-vp-versions] { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    [data-vp-versions] button { width: 34px; }
+    [data-vp-versions] button i { display: none; }
+    [data-vp-pnav] { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+    [data-vp-pnav] button { min-height: 54px; padding: 6px 10px; }
+    [data-vp-pnav] small { letter-spacing: .08em; }
+    [data-vp-sheet-btn] { display: flex !important; }
+    [data-vp-psec] { position: absolute; inset: 0; z-index: 5; display: none; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; padding: 14px 14px max(16px, env(safe-area-inset-bottom)); background: #0b0b0d; }
+    [data-vp][data-sheet] [data-vp-psec] { display: flex; }
+    [data-vp-sheet-close] { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid rgba(247,247,245,.28); font-size: 12px; font-weight: 700; }
+    [data-vp-sheet-head] [data-vp-h] { margin: 0; font-size: 12px; color: #F7F7F5; }
+    [data-vp-tabs] { margin-top: 12px; }
   }
+  @media (max-width: 899px) { [data-vp-where] [data-w1] { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     [data-vt-cover] img { transition: none; }
     [data-video-tile]:hover [data-vt-cover] img { transform: none; }
@@ -2187,6 +2242,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <a href="#work" data-gallery-back="1" style="display:inline-flex;align-items:center;gap:10px;flex:none;padding:0 22px;min-height:52px;border:1px solid rgba(247,247,245,.35);color:#F7F7F5;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;transition:border-color .2s,color .2s" style-hover="border-color:#FF6A00;color:#FF6A00"><span data-lang="en">Back to work</span><span data-lang="ar" style="display:none">عودة للأعمال</span></a>
       </div>
     </div>
+    <nav data-vsec-nav="1" aria-label="Video sections"><a href="#g/cgi" aria-current="page"><span data-lang="en">Cinematic CGI</span><span data-lang="ar" style="display:none">إعلانات CGI سينمائية</span></a><a href="#g/vfx"><span data-lang="en">VFX Production</span><span data-lang="ar" style="display:none">إنتاج المؤثرات البصرية</span></a></nav>
     <article style="padding:clamp(28px,4vw,44px) clamp(18px,4vw,40px)">
       <div data-video-grid="1" data-ltr-grid="1">
         <button type="button" data-video-tile="1" data-videos="HwvywE6QJIM|0:23|v" data-client-en="VANILLY" data-client-ar="فانيلي" data-title-en="Christmas train" data-title-ar="قطار الكريسماس"><span data-vt-cover="1"><img src="assets/img/video/HwvywE6QJIM.webp" alt="" width="540" height="960" loading="lazy" decoding="async"><span data-vt-play="1" aria-hidden="true"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:block;margin-inline-start:3px"><path d="M8 5v14l11-7z"></path></svg></span><span data-vt-badge="1">0:23</span></span><span data-vt-text="1"><span data-vt-client="1"><span data-lang="en">VANILLY</span><span data-lang="ar" style="display:none">فانيلي</span></span><span data-vt-title="1"><span data-lang="en">Christmas train</span><span data-lang="ar" style="display:none">قطار الكريسماس</span></span></span></button>
@@ -2213,6 +2269,7 @@ textarea.input { min-height: 90px; resize: vertical; }
         <a href="#work" data-gallery-back="1" style="display:inline-flex;align-items:center;gap:10px;flex:none;padding:0 22px;min-height:52px;border:1px solid rgba(247,247,245,.35);color:#F7F7F5;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;transition:border-color .2s,color .2s" style-hover="border-color:#FF6A00;color:#FF6A00"><span data-lang="en">Back to work</span><span data-lang="ar" style="display:none">عودة للأعمال</span></a>
       </div>
     </div>
+    <nav data-vsec-nav="1" aria-label="Video sections"><a href="#g/cgi"><span data-lang="en">Cinematic CGI</span><span data-lang="ar" style="display:none">إعلانات CGI سينمائية</span></a><a href="#g/vfx" aria-current="page"><span data-lang="en">VFX Production</span><span data-lang="ar" style="display:none">إنتاج المؤثرات البصرية</span></a></nav>
     <article style="padding:clamp(28px,4vw,44px) clamp(18px,4vw,40px)">
       <div data-video-grid="1" data-ltr-grid="1">
         <button type="button" data-video-tile="1" data-videos="FaonLVYmhMA|0:33|v;8lkXIXYHc1Y|0:54|v;Qce6Em9wCU8|0:24|v" data-client-en="The Legend HUB" data-client-ar="ذا ليجند هَب" data-title-en="Helicopter drop &amp; giant sign" data-title-ar="هليكوبتر ولافتة عملاقة"><span data-vt-cover="1"><img src="assets/img/video/FaonLVYmhMA.webp" alt="" width="540" height="960" loading="lazy" decoding="async"><span data-vt-play="1" aria-hidden="true"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:block;margin-inline-start:3px"><path d="M8 5v14l11-7z"></path></svg></span><span data-vt-badge="1"><span data-lang="en">3 videos</span><span data-lang="ar" style="display:none">3 مقاطع</span></span></span><span data-vt-text="1"><span data-vt-client="1"><span data-lang="en">The Legend HUB</span><span data-lang="ar" style="display:none">ذا ليجند هَب</span></span><span data-vt-title="1"><span data-lang="en">Helicopter drop &amp; giant sign</span><span data-lang="ar" style="display:none">هليكوبتر ولافتة عملاقة</span></span></span></button>
@@ -3315,113 +3372,280 @@ class Component extends DCLogic {
 </script>
 <script>
 (function(){
-  // on-page player for the Cinematic CGI / VFX galleries
-  var vp, frame, list = [], idx = 0, ver = 0, opener = null, pushed = false, prevOverflow = '';
+  // full-screen player for the Cinematic CGI / VFX galleries
+  var SEC = { cgi: ['Cinematic CGI', 'إعلانات CGI'], vfx: ['VFX', 'مؤثرات بصرية'] };
+  var ICON_GRID = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>';
+  var ICON_FS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
+  var vp, frame, iframe = null, sections = [], sec = 0, view = 0, idx = 0, ver = 0;
+  var opener = null, pushed = false, prevOverflow = '', warmed = false;
+
   function isAr(){ return document.documentElement.getAttribute('lang') === 'ar'; }
+  function T(en, ar){ return isAr() ? ar : en; }
+  function q(s){ return vp.querySelector(s); }
+  function mk(tag, attrs){ var e = document.createElement(tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  function cover(id){ return 'url("assets/img/video/' + id + '.webp")'; }
+  function text(tile, k){ return tile.getAttribute('data-' + k + (isAr() ? '-ar' : '-en')) || ''; }
   function videosOf(tile){
     return (tile.getAttribute('data-videos') || '').split(';').map(function(s){
       var p = s.split('|'); return { id: p[0], dur: p[1], h: p[2] === 'h' };
     });
   }
-  function el(tag, attrs, text){
-    var e = document.createElement(tag);
-    for (var k in attrs) e.setAttribute(k, attrs[k]);
-    if (text != null) e.textContent = text;
-    return e;
-  }
-  function build(){
-    vp = el('div', { 'data-vp': '1', role: 'dialog', 'aria-modal': 'true' });
-    var head = el('div', { 'data-vp-head': '1' });
-    var meta = el('div', { 'data-vp-meta': '1' });
-    meta.append(el('span', { 'data-vp-client': '1' }), el('span', { 'data-vp-title': '1', id: 'vp-title' }));
-    vp.setAttribute('aria-labelledby', 'vp-title');
-    var close = el('button', { type: 'button', 'data-vp-close': '1' }, '✕');
-    head.append(meta, close);
-    var stage = el('div', { 'data-vp-stage': '1' });
-    frame = el('div', { 'data-vp-frame': '1' });
-    var prev = el('button', { type: 'button', 'data-vp-nav': 'prev' });
-    var next = el('button', { type: 'button', 'data-vp-nav': 'next' });
-    stage.append(prev, frame, next);
-    var foot = el('div', { 'data-vp-foot': '1' });
-    var side = el('div', { 'data-vp-side': '1' });
-    side.append(el('span', { 'data-vp-count': '1' }), el('a', { 'data-vp-yt': '1', target: '_blank', rel: 'noopener noreferrer' }));
-    foot.append(el('div', { 'data-vp-versions': '1' }), side);
-    vp.append(head, stage, foot);
-    document.body.appendChild(vp);
-    close.addEventListener('click', function(){ hide(true); });
-    prev.addEventListener('click', function(){ go(-1); });
-    next.addEventListener('click', function(){ go(1); });
-    vp.addEventListener('click', function(e){ if (e.target === vp || e.target === stage) hide(true); });
-    document.addEventListener('keydown', function(e){
-      if (!vp.hasAttribute('data-open')) return;
-      if (e.key === 'Escape') hide(true);
-      else if (e.key === 'ArrowRight') go(isAr() ? -1 : 1);
-      else if (e.key === 'ArrowLeft') go(isAr() ? 1 : -1);
+  function collect(){
+    sections = Array.prototype.map.call(document.querySelectorAll('[data-video-grid]'), function(g){
+      var page = g.closest('[data-gallery-page]');
+      return { key: page ? page.getAttribute('data-gallery-page') : '', tiles: Array.prototype.slice.call(g.querySelectorAll('[data-video-tile]')) };
     });
-    window.addEventListener('popstate', function(){ if (pushed) { pushed = false; hide(false); } });
   }
-  function q(s){ return vp.querySelector(s); }
+  function secLabel(i){ var n = SEC[sections[i].key] || [sections[i].key, sections[i].key]; return T(n[0], n[1]); }
+  function cur(){ return sections[sec].tiles[idx]; }
+  function fsOk(){ return !!(document.fullscreenEnabled && vp && vp.requestFullscreen); }
+
+  // open the connections a YouTube embed needs as soon as a visitor shows
+  // interest, so the first video starts without the handshake delay
+  function warm(){
+    if (warmed) return; warmed = true;
+    ['https://www.youtube-nocookie.com', 'https://www.youtube.com', 'https://i.ytimg.com'].forEach(function(href){
+      document.head.appendChild(mk('link', { rel: 'preconnect', href: href }));
+    });
+  }
+
+  function build(){
+    vp = mk('div', { 'data-vp': '1', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'vp-title' });
+    vp.innerHTML =
+      '<div data-vp-top="1">' +
+        '<div data-vp-meta="1"><span data-vp-client="1"></span><span data-vp-title="1" id="vp-title"></span></div>' +
+        '<span data-vp-where="1"></span>' +
+        '<button type="button" data-vp-icon="fs">' + ICON_FS + '</button>' +
+        '<button type="button" data-vp-icon="close">✕</button>' +
+      '</div>' +
+      '<div data-vp-body="1">' +
+        '<div data-vp-stage="1">' +
+          '<button type="button" data-vp-nav="prev">‹</button>' +
+          '<div data-vp-frame="1"><span data-vp-spin="1" aria-hidden="true"></span></div>' +
+          '<button type="button" data-vp-nav="next">›</button>' +
+        '</div>' +
+        '<div data-vp-panel="1">' +
+          '<div data-vp-vsec="1"><p data-vp-h="1"><span data-t="vh"></span><span data-t="vc"></span></p><div data-vp-versions="1"></div></div>' +
+          '<div data-vp-pnav="1">' +
+            '<button type="button" data-dir="prev"><small></small><strong></strong></button>' +
+            '<button type="button" data-vp-sheet-btn="1">' + ICON_GRID + '<span></span></button>' +
+            '<button type="button" data-dir="next"><small></small><strong></strong></button>' +
+          '</div>' +
+          '<div data-vp-psec="1">' +
+            '<div data-vp-sheet-head="1"><p data-vp-h="1"><span data-t="ph"></span></p><button type="button" data-vp-sheet-close="1"></button></div>' +
+            '<div data-vp-tabs="1" role="tablist"></div>' +
+            '<div data-vp-pgrid="1"></div>' +
+            '<a data-vp-yt="1" target="_blank" rel="noopener noreferrer"></a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(vp);
+    frame = q('[data-vp-frame]');
+
+    q('[data-vp-icon="close"]').addEventListener('click', function(){ hide(true); });
+    q('[data-vp-icon="fs"]').addEventListener('click', toggleFs);
+    q('[data-vp-nav="prev"]').addEventListener('click', function(){ goProject(-1); });
+    q('[data-vp-nav="next"]').addEventListener('click', function(){ goProject(1); });
+    q('[data-vp-pnav] [data-dir="prev"]').addEventListener('click', function(){ goProject(-1); });
+    q('[data-vp-pnav] [data-dir="next"]').addEventListener('click', function(){ goProject(1); });
+    q('[data-vp-sheet-btn]').addEventListener('click', function(){
+      view = sec; renderGrid(); vp.setAttribute('data-sheet', '');
+      var on = q('[data-vp-pgrid] [aria-current="true"]'); if (on) on.focus();
+    });
+    q('[data-vp-sheet-close]').addEventListener('click', closeSheet);
+    q('[data-vp-versions]').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-i]'); if (!b) return;
+      ver = +b.getAttribute('data-i'); render();
+    });
+    q('[data-vp-tabs]').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-s]'); if (!b) return;
+      view = +b.getAttribute('data-s'); renderGrid();
+    });
+    q('[data-vp-pgrid]').addEventListener('click', function(e){
+      var b = e.target.closest('button[data-i]'); if (!b) return;
+      sec = +b.getAttribute('data-s'); idx = +b.getAttribute('data-i'); ver = 0;
+      closeSheet(); render();
+    });
+    // keep keyboard focus inside the player while it is open
+    vp.addEventListener('keydown', function(e){
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.filter.call(vp.querySelectorAll('button, a[href], iframe'), function(x){ return x.offsetParent !== null; });
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    });
+  }
+
+  function closeSheet(){ if (vp) vp.removeAttribute('data-sheet'); }
+
+  function renderGrid(){
+    var tabs = q('[data-vp-tabs]'); tabs.textContent = '';
+    tabs.hidden = sections.length < 2;
+    sections.forEach(function(s, i){
+      var b = mk('button', { type: 'button', role: 'tab', 'data-s': i, 'aria-selected': String(i === view) });
+      b.textContent = secLabel(i) + ' · ' + s.tiles.length;
+      tabs.appendChild(b);
+    });
+    var g = q('[data-vp-pgrid]'); g.textContent = '';
+    sections[view].tiles.forEach(function(t, i){
+      var on = view === sec && i === idx;
+      var b = mk('button', { type: 'button', 'data-s': view, 'data-i': i, 'aria-current': String(on) });
+      var c = mk('span', { 'data-c': '1', 'data-now': T('Playing', 'يعرض الآن') });
+      c.style.backgroundImage = cover(videosOf(t)[0].id);
+      var k = mk('span', { 'data-k': '1' }); k.textContent = text(t, 'client');
+      var n = mk('span', { 'data-n': '1' }); n.textContent = text(t, 'title');
+      b.append(c, k, n); g.appendChild(b);
+    });
+  }
+
   function render(){
-    var ar = isAr(), tile = list[idx], vids = videosOf(tile), v = vids[ver];
+    var ar = isAr(), tile = cur(), vids = videosOf(tile), v = vids[ver], list = sections[sec].tiles, n = list.length;
     vp.setAttribute('dir', ar ? 'rtl' : 'ltr');
     vp.setAttribute('lang', ar ? 'ar' : 'en');
-    q('[data-vp-client]').textContent = tile.getAttribute(ar ? 'data-client-ar' : 'data-client-en');
-    q('[data-vp-title]').textContent = tile.getAttribute(ar ? 'data-title-ar' : 'data-title-en');
-    q('[data-vp-close]').setAttribute('aria-label', ar ? 'إغلاق' : 'Close');
-    var prev = q('[data-vp-nav="prev"]'), next = q('[data-vp-nav="next"]');
-    // the dialog is dir=rtl in Arabic, where bidi mirrors these glyphs — same characters both ways
-    prev.textContent = '‹'; next.textContent = '›';
-    prev.setAttribute('aria-label', ar ? 'المشروع السابق' : 'Previous project');
-    next.setAttribute('aria-label', ar ? 'المشروع التالي' : 'Next project');
-    prev.style.visibility = next.style.visibility = list.length > 1 ? '' : 'hidden';
+    q('[data-vp-client]').textContent = text(tile, 'client');
+    q('[data-vp-title]').textContent = text(tile, 'title');
+    // section name drops away on phones so the project title keeps its width
+    var where = q('[data-vp-where]'), w1 = mk('span', { 'data-w1': '1' });
+    w1.textContent = secLabel(sec) + ' · ';
+    where.textContent = '';
+    where.append(w1, document.createTextNode((idx + 1) + ' / ' + n));
+    q('[data-vp-icon="close"]').setAttribute('aria-label', T('Close', 'إغلاق'));
+    var fs = q('[data-vp-icon="fs"]');
+    fs.hidden = !fsOk();
+    fs.setAttribute('aria-label', document.fullscreenElement ? T('Exit full screen', 'الخروج من ملء الشاشة') : T('Full screen', 'ملء الشاشة'));
+    fs.title = fs.getAttribute('aria-label');
+
+    var p = list[(idx - 1 + n) % n], nx = list[(idx + 1) % n];
+    var sp = q('[data-vp-nav="prev"]'), sn = q('[data-vp-nav="next"]');
+    sp.hidden = sn.hidden = n < 2;
+    sp.title = T('Previous project: ', 'المشروع السابق: ') + text(p, 'client');
+    sn.title = T('Next project: ', 'المشروع التالي: ') + text(nx, 'client');
+    sp.setAttribute('aria-label', sp.title); sn.setAttribute('aria-label', sn.title);
+    var bp = q('[data-vp-pnav] [data-dir="prev"]'), bn = q('[data-vp-pnav] [data-dir="next"]');
+    bp.hidden = bn.hidden = n < 2;
+    bp.querySelector('small').textContent = T('← Previous', '→ السابق');
+    bp.querySelector('strong').textContent = text(p, 'client');
+    bn.querySelector('small').textContent = T('Next project →', 'المشروع التالي ←');
+    bn.querySelector('strong').textContent = text(nx, 'client');
+    bp.setAttribute('aria-label', sp.title); bn.setAttribute('aria-label', sn.title);
+    q('[data-vp-sheet-btn] span').textContent = T('Projects', 'المشاريع');
+    q('[data-vp-sheet-close]').textContent = T('Done', 'تم');
+    q('[data-t="ph"]').textContent = T('All projects', 'كل المشاريع');
+
+    var vsec = q('[data-vp-vsec]');
+    vsec.hidden = vids.length < 2;
+    q('[data-t="vh"]').textContent = T('Videos in this project', 'مقاطع هذا المشروع');
+    q('[data-t="vc"]').textContent = (ver + 1) + ' / ' + vids.length;
+    var box = q('[data-vp-versions]'); box.textContent = '';
+    vids.forEach(function(x, i){
+      var b = mk('button', { type: 'button', 'data-i': i, 'aria-current': String(i === ver), 'aria-label': T('Video ', 'المقطع ') + (i + 1) + ' · ' + x.dur });
+      b.style.backgroundImage = cover(x.id);
+      var s = mk('span', {}); s.innerHTML = '<b></b><i></i>';
+      s.firstChild.textContent = String(i + 1); s.lastChild.textContent = ' · ' + x.dur;
+      b.appendChild(s); box.appendChild(b);
+    });
+
+    var yt = q('[data-vp-yt]');
+    yt.href = 'https://www.youtube.com/watch?v=' + v.id;
+    yt.textContent = T('Watch on YouTube', 'شاهد على يوتيوب') + ' ↗';
+    renderGrid();
+    play(tile, v);
+  }
+
+  // YouTube streams the video in pieces at a quality that fits the player
+  // and the connection — nothing is downloaded up front
+  function play(tile, v){
     if (v.h) frame.setAttribute('data-h', ''); else frame.removeAttribute('data-h');
-    frame.style.backgroundImage = 'url("assets/img/video/' + v.id + '.webp")';
-    frame.textContent = '';
-    var f = el('iframe', {
-      src: 'https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&playsinline=1&rel=0&modestbranding=1',
+    frame.removeAttribute('data-loaded');
+    frame.style.backgroundImage = cover(v.id);
+    if (iframe) iframe.remove();
+    var f = iframe = mk('iframe', {
+      src: 'https://www.youtube-nocookie.com/embed/' + v.id + '?autoplay=1&playsinline=1&rel=0&modestbranding=1&enablejsapi=1&origin=' + encodeURIComponent(location.origin),
       title: tile.getAttribute('data-client-en') + ' — ' + tile.getAttribute('data-title-en'),
       allow: 'autoplay; encrypted-media; picture-in-picture; fullscreen',
       allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin'
     });
-    frame.appendChild(f);
-    var box = q('[data-vp-versions]'); box.textContent = '';
-    if (vids.length > 1) vids.forEach(function(x, i){
-      var b = el('button', { type: 'button', 'aria-pressed': String(i === ver),
-        'aria-label': (ar ? 'المقطع ' : 'Video ') + (i + 1) + ' · ' + x.dur });
-      b.style.backgroundImage = 'url("assets/img/video/' + x.id + '.webp")';
-      b.appendChild(el('span', {}, String(i + 1)));
-      b.addEventListener('click', function(){ ver = i; render(); });
-      box.appendChild(b);
+    f.addEventListener('load', function(){
+      if (f !== iframe) return;
+      frame.setAttribute('data-loaded', '');
+      // ask the player to report its state, so the next video can follow on
+      try { f.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1, channel: 'widget' }), '*'); } catch (e) {}
     });
-    q('[data-vp-count]').textContent = (idx + 1) + ' / ' + list.length + '  ·  ' + v.dur;
-    var yt = q('[data-vp-yt]');
-    yt.href = 'https://www.youtube.com/watch?v=' + v.id;
-    yt.textContent = (ar ? 'شاهد على يوتيوب' : 'Watch on YouTube') + ' ↗';
+    frame.appendChild(f);
   }
-  function go(d){ idx = (idx + d + list.length) % list.length; ver = 0; render(); }
+
+  // when a video ends, the project's next video plays
+  window.addEventListener('message', function(e){
+    if (!iframe || e.source !== iframe.contentWindow) return;
+    var d = e.data;
+    if (typeof d === 'string') { try { d = JSON.parse(d); } catch (x) { return; } }
+    if (!d || typeof d !== 'object') return;
+    var st = d.event === 'onStateChange' ? d.info : (d.event === 'infoDelivery' && d.info ? d.info.playerState : undefined);
+    if (st !== 0 || iframe._ended) return;
+    iframe._ended = true;
+    if (ver < videosOf(cur()).length - 1) { ver++; render(); }
+  });
+
+  function goProject(d){ var n = sections[sec].tiles.length; idx = (idx + d + n) % n; ver = 0; view = sec; render(); }
+  function goVersion(d){ var n = videosOf(cur()).length; if (n < 2) return; ver = (ver + d + n) % n; render(); }
+  function toggleFs(){
+    if (!fsOk()) return;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else { var r = vp.requestFullscreen(); if (r && r.catch) r.catch(function(){}); }
+  }
+  document.addEventListener('fullscreenchange', function(){
+    if (!vp || !vp.hasAttribute('data-open')) return;
+    var fs = q('[data-vp-icon="fs"]');
+    fs.setAttribute('aria-label', document.fullscreenElement ? T('Exit full screen', 'الخروج من ملء الشاشة') : T('Full screen', 'ملء الشاشة'));
+    fs.title = fs.getAttribute('aria-label');
+  });
+
   function open(tile){
     if (!vp) build();
-    var grid = tile.closest('[data-video-grid]');
-    list = Array.prototype.slice.call(grid.querySelectorAll('[data-video-tile]'));
-    idx = Math.max(0, list.indexOf(tile)); ver = 0; opener = tile;
+    collect();
+    sections.forEach(function(s, i){ var j = s.tiles.indexOf(tile); if (j >= 0) { sec = i; idx = j; } });
+    view = sec; ver = 0; opener = tile;
     render();
     vp.setAttribute('data-open', '');
     prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     try { history.pushState({ vp: 1 }, ''); pushed = true; } catch (e) {}
-    q('[data-vp-close]').focus();
+    q('[data-vp-icon="close"]').focus();
   }
   function hide(fromUi){
     if (!vp || !vp.hasAttribute('data-open')) return;
+    if (document.fullscreenElement) { try { document.exitFullscreen(); } catch (e) {} }
     vp.removeAttribute('data-open');
-    frame.textContent = '';
+    closeSheet();
+    if (iframe) { iframe.remove(); iframe = null; }
     document.body.style.overflow = prevOverflow;
     if (opener) opener.focus();
     if (fromUi && pushed) { pushed = false; history.back(); }
   }
+  window.addEventListener('popstate', function(){ if (pushed) { pushed = false; hide(false); } });
+
+  document.addEventListener('keydown', function(e){
+    if (!vp || !vp.hasAttribute('data-open')) return;
+    if (e.key === 'Escape') { if (vp.hasAttribute('data-sheet')) closeSheet(); else hide(true); return; }
+    if (vp.hasAttribute('data-sheet')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); goProject(isAr() ? -1 : 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); goProject(isAr() ? 1 : -1); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); goVersion(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); goVersion(-1); }
+    else if (e.key === 'f' || e.key === 'F') toggleFs();
+  });
+
   document.addEventListener('click', function(e){
     var t = e.target && e.target.closest && e.target.closest('[data-video-tile]');
-    if (t) { e.preventDefault(); open(t); }
+    if (t) { e.preventDefault(); warm(); open(t); return; }
+    // the CGI / VFX switcher swaps pages in place, so Back still leads to the work index
+    var a = e.target && e.target.closest && e.target.closest('[data-vsec-nav] a');
+    if (a && !a.hasAttribute('aria-current')) { e.preventDefault(); location.replace(a.getAttribute('href')); }
+  });
+  ['pointerover', 'focusin', 'touchstart'].forEach(function(type){
+    document.addEventListener(type, function(e){
+      if (!warmed && e.target && e.target.closest && e.target.closest('[data-video-tile]')) warm();
+    }, { passive: true });
   });
 })();
 </script>
