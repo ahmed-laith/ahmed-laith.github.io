@@ -1129,9 +1129,10 @@ textarea.input { min-height: 90px; resize: vertical; }
         <p dir="rtl" lang="ar" style="margin:0;max-width:46ch;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:16px;line-height:1.9;color:#a3a3a6;border-right:2px solid #FF6A00;padding-right:16px">نحو سرد بصري معاصر يربط بين الإبداع والتقنية — تصوير المنتجات، الإعلانات السينمائية، المؤثرات البصرية، والتوجيه الإبداعي.</p>
       </sc-if>
       <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:8px">
-        <a id="hero-cta" href="#work" data-cta="work" style="background:#FF6A00;border:1px solid #FF6A00;color:#1b1c20;padding:16px 22px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px;flex:1 1 220px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:all .2s" style-hover="background:#FF6A00;color:#1b1c20"><span data-lang="en">View my work</span><span data-lang="ar" style="display:none">شاهد أعمالي</span><span aria-hidden="true">↓</span></a>
-        <a href="mailto:ahmedlaith3d99@gmail.com" style="border:1px solid rgba(247,247,245,.35);color:#F7F7F5;padding:16px 26px;min-height:52px;display:flex;align-items:center;flex:1 1 200px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:all .2s" style-hover="border-color:#FF6A00;color:#FF6A00"><span data-lang="en">Email me</span><span data-lang="ar" style="display:none">راسلني</span></a>
+        <a id="hero-cta" href="assets/video/showreel.mp4" data-cta="reel" data-reel-open="1" style="background:#FF6A00;border:1px solid #FF6A00;color:#1b1c20;padding:16px 22px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px;flex:1 1 220px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:all .2s" style-hover="background:#FF6A00;color:#1b1c20"><svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="currentColor" aria-hidden="true" style="flex:none"><path d="M8 5v14l11-7z"></path></svg><span data-lang="en">Showreel</span><span data-lang="ar" style="display:none">الشوريل</span><span style="font-variant-numeric:tabular-nums">0:20</span></a>
+        <a href="#work" data-cta="work" style="border:1px solid rgba(247,247,245,.35);color:#F7F7F5;padding:16px 26px;min-height:52px;display:flex;align-items:center;justify-content:center;gap:10px;flex:1 1 200px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;transition:all .2s" style-hover="border-color:#FF6A00;color:#FF6A00"><span data-lang="en">View my work</span><span data-lang="ar" style="display:none">شاهد أعمالي</span><span aria-hidden="true">↓</span></a>
       </div>
+        <a data-cta="email" href="mailto:ahmedlaith3d99@gmail.com" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#a3a3a6;transition:color .2s" style-hover="color:#FF6A00"><span data-lang="en">Email me</span><span data-lang="ar" style="display:none">راسلني</span><span aria-hidden="true">↗</span></a>
         <dl data-hero-stats="1" style="display:flex;flex-wrap:wrap;gap:18px 56px;margin:4px 0 0;padding-top:24px;border-top:1px solid rgba(247,247,245,.14)"><div><dt style="font-size:clamp(30px,3vw,40px);font-weight:800;line-height:1;letter-spacing:-.02em;color:#FF6A00">4+</dt><dd style="margin:8px 0 0;font-size:13px;line-height:1.45;color:#a3a3a6;letter-spacing:.04em"><span data-lang="en">Years in design</span><span data-lang="ar" style="display:none">سنوات خبرة في التصميم</span></dd></div><div><dt style="font-size:clamp(30px,3vw,40px);font-weight:800;line-height:1;letter-spacing:-.02em;color:#FF6A00">17+</dt><dd style="margin:8px 0 0;font-size:13px;line-height:1.45;color:#a3a3a6;letter-spacing:.04em"><span data-lang="en">Clients in Iraq &amp; abroad</span><span data-lang="ar" style="display:none">عميلاً داخل العراق وخارجه</span></dd></div></dl>
 </div><div data-hero-media="1" style="position:relative;min-width:0;min-height:min(70vh,540px);background:#2c2d33">
       <sc-if value="{{ hasHeroVideo }}" hint-placeholder-val="{{ false }}">
@@ -3621,6 +3622,96 @@ class Component extends DCLogic {
   ['pointerover', 'focusin', 'touchstart'].forEach(function(type){
     document.addEventListener(type, function(e){
       if (!warmed && e.target && e.target.closest && e.target.closest('[data-video-tile]')) warm();
+    }, { passive: true });
+  });
+})();
+</script>
+<style>
+  /* showreel: full screen over the page, played from the site's own file */
+  [data-reel] { position: fixed; inset: 0; z-index: 10002; display: none; align-items: center; justify-content: center; padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); background: rgba(7,7,8,.97); }
+  [data-reel][data-open] { display: flex; }
+  [data-reel-box] { position: relative; aspect-ratio: 9 / 16; height: calc(100vh - 24px); height: min(calc(100dvh - 24px), calc((100vw - 24px) * 16 / 9)); background: #000 center / cover no-repeat; }
+  [data-reel-box] video { display: block; width: 100%; height: 100%; background: transparent; }
+  [data-reel-close] { position: fixed; top: max(12px, env(safe-area-inset-top)); inset-inline-end: 12px; z-index: 2; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(247,247,245,.35); background: rgba(27,28,32,.72); color: #F7F7F5; font-size: 20px; cursor: pointer; }
+  [data-reel-close]:hover { border-color: #FF6A00; color: #FF6A00; }
+  [data-reel-end] { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: rgba(11,11,13,.72); }
+  [data-reel-end][hidden] { display: none; }
+  [data-reel-end] button, [data-reel-end] a { min-width: 200px; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; }
+  [data-reel-end] button { appearance: none; border: 1px solid rgba(247,247,245,.4); background: transparent; color: #F7F7F5; }
+  [data-reel-end] a { border: 1px solid #FF6A00; background: #FF6A00; color: #1b1c20; }
+  [data-reel][dir="rtl"] [data-reel-end] button, [data-reel][dir="rtl"] [data-reel-end] a { letter-spacing: 0; font-size: 15px; }
+</style>
+<script>
+(function(){
+  // the hero's Showreel button plays the 20-second reel full screen, with sound
+  var SRC = 'assets/video/showreel.mp4', POSTER = 'assets/video/showreel-poster.webp';
+  var ov, box, video, end, opener = null, pushed = false, prevOverflow = '';
+  function isAr(){ return document.documentElement.getAttribute('lang') === 'ar'; }
+  function T(en, ar){ return isAr() ? ar : en; }
+  function build(){
+    if (ov) return;
+    ov = document.createElement('div');
+    ov.setAttribute('data-reel', '1');
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.innerHTML = '<button type="button" data-reel-close="1">✕</button>' +
+      '<div data-reel-box="1"><video playsinline controls preload="none"></video>' +
+      '<div data-reel-end="1" hidden><button type="button" data-reel-replay="1"></button><a data-reel-work="1" href="#work"></a></div></div>';
+    document.body.appendChild(ov);
+    box = ov.querySelector('[data-reel-box]');
+    video = ov.querySelector('video');
+    end = ov.querySelector('[data-reel-end]');
+    box.style.backgroundImage = 'url("' + POSTER + '")';
+    video.poster = POSTER;
+    ov.querySelector('[data-reel-close]').addEventListener('click', function(){ hide(true); });
+    ov.addEventListener('click', function(e){ if (e.target === ov) hide(true); });
+    video.addEventListener('ended', function(){ end.hidden = false; end.querySelector('a').focus(); });
+    video.addEventListener('play', function(){ end.hidden = true; });
+    end.querySelector('button').addEventListener('click', function(){ video.currentTime = 0; video.play(); });
+    // after the reel, straight to the work — the two video sections lead it
+    end.querySelector('a').addEventListener('click', function(e){
+      e.preventDefault(); hide(true);
+      setTimeout(function(){ var w = document.getElementById('work'); if (w) w.scrollIntoView({ behavior: 'smooth' }); }, 80);
+    });
+    document.addEventListener('keydown', function(e){ if (ov.hasAttribute('data-open') && e.key === 'Escape') hide(true); });
+    window.addEventListener('popstate', function(){ if (pushed) { pushed = false; hide(false); } });
+  }
+  // start fetching as soon as the visitor reaches for the button
+  function warm(){ build(); if (!video.getAttribute('src')) { video.preload = 'auto'; video.src = SRC; } }
+  function open(a){
+    warm();
+    var ar = isAr();
+    ov.setAttribute('dir', ar ? 'rtl' : 'ltr');
+    ov.setAttribute('aria-label', T('Showreel', 'الشوريل'));
+    ov.querySelector('[data-reel-close]').setAttribute('aria-label', T('Close', 'إغلاق'));
+    end.querySelector('button').textContent = T('Replay', 'إعادة التشغيل');
+    end.querySelector('a').textContent = T('View my work', 'شاهد أعمالي');
+    end.hidden = true;
+    opener = a;
+    ov.setAttribute('data-open', '');
+    prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    try { history.pushState({ reel: 1 }, ''); pushed = true; } catch (e) {}
+    video.currentTime = 0;
+    var p = video.play(); if (p && p.catch) p.catch(function(){});
+    ov.querySelector('[data-reel-close]').focus();
+  }
+  function hide(fromUi){
+    if (!ov || !ov.hasAttribute('data-open')) return;
+    video.pause();
+    ov.removeAttribute('data-open');
+    document.body.style.overflow = prevOverflow;
+    if (opener) opener.focus();
+    if (fromUi && pushed) { pushed = false; history.back(); }
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest && e.target.closest('[data-reel-open]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault(); open(a);
+  });
+  ['pointerover', 'touchstart', 'focusin'].forEach(function(type){
+    document.addEventListener(type, function(e){
+      if (e.target && e.target.closest && e.target.closest('[data-reel-open]')) warm();
     }, { passive: true });
   });
 })();
