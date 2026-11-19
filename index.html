@@ -3716,4 +3716,163 @@ class Component extends DCLogic {
   });
 })();
 </script>
+<script id="al-motion">
+/* AL Motion — GSAP + ScrollTrigger layer.
+   Complements the existing IntersectionObserver reveal (cards / services / clients / about / contact),
+   which is intentionally left untouched.
+   Opt-in for any new element:  data-motion="fade-up|fade-in|slide-x|scale-in|clip-up"
+                                data-motion-delay="0.2" (seconds)                          */
+(function () {
+  'use strict';
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var BASE = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/';
+
+  // The page is unpacked by a bundler at start-up, which can drop a script tag injected too early.
+  // So: inject, and if the global has not appeared shortly, inject again (up to 4 tries).
+  function load(src, test, cb, tries) {
+    tries = tries === undefined ? 4 : tries;
+    if (test()) { cb(); return; }
+    if (tries <= 0) { console.warn('[motion] could not load', src, '- page stays static'); return; }
+    var s = document.createElement('script');
+    s.src = src;
+    s.async = false;
+    s.onload = function () { if (test()) cb(); };
+    (document.head || document.documentElement).appendChild(s);
+    setTimeout(function () { if (!test()) load(src, test, cb, tries - 1); }, 2500);
+  }
+
+  // wait until the intro loader is gone so the entrance is actually seen
+  function afterLoader(cb) {
+    var t0 = Date.now();
+    (function poll() {
+      if (!document.getElementById('al-loader') || Date.now() - t0 > 7000) cb();
+      else setTimeout(poll, 80);
+    })();
+  }
+
+  // elements carry inline CSS transitions; park them while GSAP drives the same properties
+  function parkTransitions(els) {
+    var saved = els.map(function (el) { return el.style.transition; });
+    els.forEach(function (el) { el.style.transition = 'none'; });
+    return function () { els.forEach(function (el, i) { el.style.transition = saved[i]; }); };
+  }
+
+  function init() {
+    if (window.ALMotion) return;
+    var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
+    if (!gsap || !ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // This page scrolls inside <body> (html is overflow-hidden), so window.scrollY stays 0.
+    // Detect the element that really scrolls and point every trigger at it.
+    var bodyCS = getComputedStyle(document.body);
+    var bodyScrolls = /(auto|scroll)/.test(bodyCS.overflowY) && document.body.scrollHeight > document.body.clientHeight + 1;
+    var SCROLLER = bodyScrolls ? document.body : window;
+    var getY = function () { return bodyScrolls ? document.body.scrollTop : window.scrollY; };
+    if (bodyScrolls) {
+      // ScrollTrigger treats <body> as "the viewport" and reads window.scrollY, so feed it body.scrollTop.
+      ScrollTrigger.scrollerProxy(document.body, {
+        scrollTop: function (v) { if (arguments.length) document.body.scrollTop = v; return document.body.scrollTop; },
+        getBoundingClientRect: function () { return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }; }
+      });
+      document.body.addEventListener('scroll', ScrollTrigger.update, { passive: true });
+    }
+    ScrollTrigger.defaults({ scroller: SCROLLER });
+
+    var EASE = 'power3.out';
+
+    var PRESETS = {
+      'fade-up':  { from: { y: 28, opacity: 0 },                          to: { y: 0, opacity: 1 } },
+      'fade-in':  { from: { opacity: 0 },                                 to: { opacity: 1 } },
+      'slide-x':  { from: { x: -40, opacity: 0 },                         to: { x: 0, opacity: 1 } },
+      'scale-in': { from: { scale: .94, opacity: 0 },                     to: { scale: 1, opacity: 1 } },
+      'clip-up':  { from: { clipPath: 'inset(0 0 100% 0)', y: 18 },       to: { clipPath: 'inset(0 0 0% 0)', y: 0 } }
+    };
+
+    /* ---------- 1. Hero entrance ---------- */
+    var hero = document.querySelector('[data-hero]');
+    if (hero && hero.children.length) {
+      var col = hero.children[0];
+      var media = hero.querySelector('[data-hero-media]');
+      var items = [];
+      Array.prototype.forEach.call(col.children, function (el) {
+        if (el.tagName === 'SC-IF') Array.prototype.forEach.call(el.children, function (c) { items.push(c); });
+        else items.push(el);
+      });
+      items = items.filter(function (el) { return el.getBoundingClientRect().height > 0; });
+
+      var restore = parkTransitions(items);
+      var tl = gsap.timeline({
+        defaults: { ease: EASE },
+        onComplete: function () { restore(); gsap.set(items.concat(media || []), { clearProps: 'transform,opacity,clipPath' }); }
+      });
+      if (media) tl.from(media, { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'power4.inOut' }, 0);
+      tl.from(items, { y: 34, opacity: 0, duration: .9, stagger: .09 }, .12);
+    }
+
+    /* ---------- 2. Section headings (number + title) ---------- */
+    gsap.utils.toArray('#work h2, #services h2, #clients h2, #about h2').forEach(function (h) {
+      var row = h.parentElement;
+      var num = row && row.firstElementChild !== h ? row.firstElementChild : null;
+      var tl = gsap.timeline({
+        scrollTrigger: { trigger: row || h, start: 'top 90%', once: true },
+        defaults: { ease: EASE }
+      });
+      tl.from(h, { clipPath: 'inset(0 0 100% 0)', y: 22, duration: .85, clearProps: 'clipPath,transform' }, 0);
+      if (num) tl.from(num, { x: -14, opacity: 0, duration: .6, clearProps: 'transform,opacity' }, 0);
+    });
+
+    /* ---------- 3. data-motion presets (opt-in for new content) ---------- */
+    gsap.utils.toArray('[data-motion]').forEach(function (el) {
+      var p = PRESETS[el.getAttribute('data-motion')] || PRESETS['fade-up'];
+      var to = Object.assign({}, p.to, {
+        duration: .9,
+        ease: EASE,
+        delay: parseFloat(el.getAttribute('data-motion-delay')) || 0,
+        clearProps: 'transform,opacity,clipPath',
+        scrollTrigger: { trigger: el, start: 'top 90%', once: true }
+      });
+      gsap.fromTo(el, p.from, to);
+    });
+
+    /* ---------- 4. Marquee reacts to scroll speed ---------- */
+    var mq = document.querySelector('div[style*="al-marquee"]');
+    var anim = mq && mq.getAnimations && mq.getAnimations()[0];
+    if (anim) {
+      var boost = 1, lastY = getY(), lastT = performance.now();
+      SCROLLER.addEventListener('scroll', function () {
+        var now = performance.now(), y = getY();
+        var v = Math.abs(y - lastY) / Math.max(now - lastT, 1);   // px per ms
+        lastY = y; lastT = now;
+        boost = Math.max(boost, 1 + Math.min(v * 1.5, 5));
+      }, { passive: true });
+      gsap.ticker.add(function () {
+        boost += (1 - boost) * .06;
+        if (boost < 1.01) boost = 1;
+        anim.playbackRate = boost;
+      });
+    }
+
+    /* ---------- 5. Keep trigger positions right as layout shifts (images, language switch, galleries) ---------- */
+    var timer;
+    function refreshSoon() { clearTimeout(timer); timer = setTimeout(function () { ScrollTrigger.refresh(); }, 250); }
+    window.addEventListener('load', refreshSoon);
+    window.addEventListener('resize', refreshSoon);
+    document.addEventListener('click', refreshSoon, true);   // language switch, gallery open/close
+    if (window.ResizeObserver) {
+      var ro = new ResizeObserver(refreshSoon);
+      Array.prototype.forEach.call(document.querySelectorAll('#work, #services, #clients, #about, #contact'), function (el) { ro.observe(el); });
+    }
+
+    window.ALMotion = { gsap: gsap, ScrollTrigger: ScrollTrigger, presets: PRESETS, refresh: function () { ScrollTrigger.refresh(); } };
+  }
+
+  var hasGsap = function () { return !!window.gsap; };
+  var hasST = function () { return !!window.ScrollTrigger; };
+  load(BASE + 'gsap.min.js', hasGsap, function () {
+    load(BASE + 'ScrollTrigger.min.js', hasST, function () { afterLoader(init); });
+  });
+})();
+</script>
 </body></html>
