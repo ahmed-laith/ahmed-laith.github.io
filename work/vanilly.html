@@ -25,6 +25,61 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/5581706d9374.png">
 <link rel="apple-touch-icon" href="../assets/img/e379c3d3cd17.png">
 <link rel="stylesheet" href="../assets/case/case.css">
+<style id="vanilly-story-style">
+/* === LEVEL 2: RESTRAINED CINEMATIC AMBIENT GLOW === */
+
+/* Hero Cover: Subtle, Non-Exaggerated Ambient Screen Glow */
+.cs-cover {
+  position: relative;
+  overflow: visible !important;
+}
+.cs-cover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 82%;
+  height: 72%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, rgba(0, 195, 180, 0.04) 0%, rgba(255, 106, 0, 0.015) 42%, transparent 72%);
+  filter: blur(48px);
+  pointer-events: none;
+  z-index: 0;
+}
+.cs-cover img {
+  position: relative;
+  z-index: 1;
+  border-radius: 4px;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cs-cover:hover img {
+  transform: scale(1.008);
+}
+
+/* Process Steps Elevation and Darkroom Frame */
+.cs-step-media figure {
+  position: relative;
+  background: #141416;
+  border: 1px solid rgba(247, 247, 245, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cs-step-media figure:hover {
+  border-color: rgba(255, 106, 0, 0.35);
+  transform: translateY(-2px);
+}
+.cs-step-media figcaption {
+  padding: 10px 16px;
+  font-size: 12.5px;
+  color: #a3a3a6;
+  background: rgba(20, 20, 22, 0.96);
+  border-top: 1px solid rgba(247, 247, 245, 0.06);
+}
+html[lang="ar"] .cs-step-media figcaption {
+  text-align: start;
+}
+</style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "VANILLY — Anamorphic Screen", "alternateName": "فانيلي — شاشة أنامورفيك", "description": "Forced-perspective 3D content for VANILLY on a curved LED billboard — the product appears to lift out of the screen and over the street.", "image": "https://ahmed-laith.github.io/assets/og/vanilly.jpg", "url": "https://ahmed-laith.github.io/work/vanilly.html", "inLanguage": ["en", "ar"], "creator": {"@type": "Person", "name": "Ahmed Laith", "url": "https://ahmed-laith.github.io/"}}</script>
 </head>
 <body>
@@ -64,22 +119,23 @@
 
     <section class="cs-section" aria-labelledby="process">
       <div class="cs-section-head"><h2 id="process"><span data-lang="en">The process</span><span data-lang="ar">خطوات العمل</span></h2></div>
+
       <ol class="cs-steps">
-        <li class="cs-step">
+        <li class="cs-step" id="step-01">
           <div class="cs-step-text"><span class="cs-step-num">01</span><h3><span data-lang="en">A frame in the brand’s colours</span><span data-lang="ar">إطار بألوان العلامة</span></h3><p><span data-lang="en">The screen is built as a deep 3D box in VANILLY’s colours, with the logo on the front and a tic-tac-toe board on the side.</span><span data-lang="ar">بُنيت الشاشة كصندوق ثلاثي الأبعاد عميق بألوان فانيلي، الشعار على الواجهة ولعبة إكس-أو على الجانب.</span></p></div>
-          <div class="cs-step-media"><figure><img src="../assets/img/245fe4c94f9e.webp" width="830" height="830" alt="VANILLY’s teal 3D frame with the logo and a tic-tac-toe board" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media"><figure><img src="../assets/img/245fe4c94f9e.webp" width="830" height="830" alt="VANILLY’s teal 3D frame with the logo and a tic-tac-toe board" loading="lazy" decoding="async"><figcaption><span data-lang="en">3D Frame · Spatial Brand Architecture</span><span data-lang="ar">الإطار ثلاثي الأبعاد · الهيكل الفراغي للعلامة</span></figcaption></figure></div>
         </li>
-        <li class="cs-step">
+        <li class="cs-step" id="step-02">
           <div class="cs-step-text"><span class="cs-step-num">02</span><h3><span data-lang="en">Products that break the frame</span><span data-lang="ar">منتجات تتجاوز الإطار</span></h3><p><span data-lang="en">Drinks and a frozen-yogurt cup push past the edge of the screen. The forced perspective makes them look as if they hang over the street.</span><span data-lang="ar">المشروبات وكوب الفروزن يوغرت تتجاوز حافة الشاشة، والمنظور القسري يجعلها تبدو معلّقة فوق الشارع.</span></p></div>
-          <div class="cs-step-media"><figure><img src="../assets/img/vanilly-yogurt.webp" width="683" height="370" alt="A VANILLY frozen-yogurt cup topped with berries, rising above the screen" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media"><figure><img src="../assets/img/vanilly-yogurt.webp" width="683" height="370" alt="A VANILLY frozen-yogurt cup topped with berries, rising above the screen" loading="lazy" decoding="async"><figcaption><span data-lang="en">Forced Perspective · Optical Volume Pop-out</span><span data-lang="ar">المنظور القسري · بروز الكتلة من الشاشة</span></figcaption></figure></div>
         </li>
-        <li class="cs-step">
+        <li class="cs-step" id="step-03">
           <div class="cs-step-text"><span class="cs-step-num">03</span><h3><span data-lang="en">Movement and play</span><span data-lang="ar">حركة ولعب</span></h3><p><span data-lang="en">Berries fall through an opening in the frame, and the tic-tac-toe game is played with VANILLY cups.</span><span data-lang="ar">حبات التوت تسقط من فتحة في الإطار، ولعبة إكس-أو تُلعب بأكواب فانيلي.</span></p></div>
-          <div class="cs-step-media"><figure><img src="../assets/img/6b77dd963638.webp" width="830" height="830" alt="Berries falling through an opening in the frame beside the tic-tac-toe game" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media"><figure><img src="../assets/img/6b77dd963638.webp" width="830" height="830" alt="Berries falling through an opening in the frame beside the tic-tac-toe game" loading="lazy" decoding="async"><figcaption><span data-lang="en">Interactive Scene · Dynamic Falling Elements</span><span data-lang="ar">مشهد تفاعلي · عناصر حركية متساقطة</span></figcaption></figure></div>
         </li>
-        <li class="cs-step">
+        <li class="cs-step" id="step-04">
           <div class="cs-step-text"><span class="cs-step-num">04</span><h3><span data-lang="en">Seen from the street</span><span data-lang="ar">من مستوى الشارع</span></h3><p><span data-lang="en">Each scene is shown on the corner building at street level — the view the illusion is built for.</span><span data-lang="ar">كل مشهد معروض على المبنى من مستوى الشارع، وهي الزاوية التي صُمّم الخداع البصري ليعمل منها.</span></p></div>
-          <div class="cs-step-media"><figure><img src="../assets/img/95900b80c918.webp" width="830" height="830" alt="The full VANILLY scene on the corner screen at night, seen from the street" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media"><figure><img src="../assets/img/95900b80c918.webp" width="830" height="830" alt="The full VANILLY scene on the corner screen at night, seen from the street" loading="lazy" decoding="async"><figcaption><span data-lang="en">Street-Level Perspective · Full Night Screen</span><span data-lang="ar">منظور الشارع الحقيقي · الشاشة الكاملة ليلاً</span></figcaption></figure></div>
         </li>
       </ol>
     </section>

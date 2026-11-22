@@ -79,7 +79,119 @@
 </script>
 
 <script src="assets/js/2e38395c4a4a.js"></script>
-<style>[data-hero-media]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,#1b1c20 0%,rgba(27,28,32,0) 26%)}[dir="rtl"] [data-hero-media]::after{background:linear-gradient(270deg,#1b1c20 0%,rgba(27,28,32,0) 26%)}@media (max-width:960px){[data-hero-media]::after,[dir="rtl"] [data-hero-media]::after{background:linear-gradient(180deg,#1b1c20 0%,rgba(27,28,32,0) 22%)}}</style></head>
+<style>[data-hero-media]::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,#1b1c20 0%,rgba(27,28,32,0) 26%)}[dir="rtl"] [data-hero-media]::after{background:linear-gradient(270deg,#1b1c20 0%,rgba(27,28,32,0) 26%)}@media (max-width:960px){[data-hero-media]::after,[dir="rtl"] [data-hero-media]::after{background:linear-gradient(180deg,#1b1c20 0%,rgba(27,28,32,0) 22%)}}</style>
+<style id="al-level1-style">
+/* === LEVEL 1: QUIET LUXURY & ART GALLERY FOCUS === */
+
+/* Smooth scrolling container physics */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Subtle gallery sibling dimming (Spotlight effect on hover) */
+@media (hover: hover) and (pointer: fine) {
+  /* Case studies focus */
+  #case-studies:has([data-cs-card]:hover) [data-cs-card]:not(:hover) {
+    opacity: 0.75 !important;
+    transition: opacity 0.4s ease !important;
+  }
+  #case-studies [data-cs-card] {
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  #case-studies [data-cs-card]:hover {
+    transform: translateY(-2px) scale(1.008) !important;
+    z-index: 2;
+  }
+
+  /* Gallery archive grid focus */
+  [data-project-grid]:has([data-tile]:hover) [data-tile]:not(:hover) {
+    opacity: 0.72 !important;
+    transition: opacity 0.4s ease !important;
+  }
+  [data-project-grid] [data-tile] {
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  [data-project-grid] [data-tile]:hover {
+    transform: translateY(-2px) scale(1.008) !important;
+    z-index: 2;
+  }
+
+  /* Services cards subtle focus */
+  #services:has([data-service-card]:hover) [data-service-card]:not(:hover) {
+    opacity: 0.78 !important;
+    transition: opacity 0.4s ease !important;
+  }
+  #services [data-service-card] {
+    transition: opacity 0.4s ease, transform 0.4s ease !important;
+  }
+  #services [data-service-card]:hover {
+    transform: translateY(-2px) !important;
+  }
+}
+
+/* Atmospheric Flashlight Glow in Darkroom */
+#al-ambient-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255, 106, 0, 0.045) 0%, rgba(255, 106, 0, 0.01) 45%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+/* Clean Image Sizing on Desktop (No Oversized Bleed) */
+@media (min-width: 1024px) {
+  [data-gallery-page] article {
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+  [data-gallery-page] [data-tile="wide"],
+  [data-gallery-page] [data-tile="hero"],
+  [data-gallery-page] [data-tile="large"] {
+    max-height: 72vh;
+  }
+  [data-gallery-page] image-slot img {
+    max-height: 72vh;
+    object-fit: contain;
+  }
+}
+
+
+
+/* === LEVEL 3: TACTILE MICRO-INTERACTIONS & MOBILE ACCESSIBILITY === */
+
+/* Tactile Button Feedback */
+a[data-cta], button, [data-gallery-back], .cs-btn, [data-lang-btn] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+a[data-cta]:active, button:active, [data-gallery-back]:active, .cs-btn:active {
+  transform: scale(0.975) !important;
+}
+
+/* Accessible Focus States */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid #FF6A00 !important;
+  outline-offset: 3px !important;
+}
+
+/* Mobile Safe-Area & Touch Targets */
+@media (max-width: 899px) {
+  header, [data-hero], [data-gallery-page] > div:first-child {
+    padding-left: max(16px, env(safe-area-inset-left)) !important;
+    padding-right: max(16px, env(safe-area-inset-right)) !important;
+  }
+}
+</style>
+
+</head>
 <body>
 <div id="al-loader" style="position:fixed;inset:0;z-index:99999;background:#1b1c20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;transition:opacity .8s cubic-bezier(.4,0,.2,1)">
   <div style="position:absolute;inset:0;background:radial-gradient(110% 80% at 50% 44%, rgba(255,106,0,.07), transparent 62%);pointer-events:none"></div>
@@ -1734,6 +1846,11 @@ textarea.input { min-height: 90px; resize: vertical; }
         <h3 style="margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:-.02em"><span data-lang="en">Bait Al Dawa Scientific Bureau</span><span data-lang="ar" style="display:none">مكتب بيت الدواء العلمي</span></h3>
       </div>
       <p style="margin:0 0 clamp(18px,2.4vw,26px);max-width:70ch;font-size:15.5px;color:#b4b4b7;line-height:1.7"><span data-lang="en">3 × 4 m booth for a lithotripsy (stone-dissolving) medication — arched header sign, backlit product walls and a private consultation corner, modelled and rendered for build approval.</span><span data-lang="ar" style="display:none">بوث بقياس 3 × 4 م لدواء تفتيت الحصى — لوحة علوية مقوّسة، جدران منتجات بإضاءة خلفية، وزاوية استشارة خاصة، نُمذج وعُرض ثلاثي الأبعاد لاعتماد التنفيذ.</span></p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 clamp(16px,2vw,22px)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">Footprint</span><span data-lang="ar" style="display:none">المساحة</span>:</strong> 3 × 4 m (12 m²)</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">CMF</span><span data-lang="ar" style="display:none">المواد</span>:</strong> <span data-lang="en">Backlit Acrylic · Matt White · Gold Accent</span><span data-lang="ar" style="display:none">أكريليك مضيء · أبيض مطفي · لمسات ذهبية</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">Deliverables</span><span data-lang="ar" style="display:none">المخرجات</span>:</strong> <span data-lang="en">3D Model · Spatial Plans · Renders</span><span data-lang="ar" style="display:none">نموذج 3D · مخططات فراغية · رندرات</span></span>
+      </div>
       <div data-project-grid="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:clamp(10px,1.4vw,18px)">
         <div data-tile="wide" data-ratio="16/9" data-span="2" style="grid-column:span 2;aspect-ratio:16/9;background:#25262b;border:1px solid rgba(247,247,245,.1);overflow:hidden;min-width:0"><image-slot id="g-booth-p1-1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7#lz=assets/img/06786ca2427d.webp" shape="rect" placeholder="Drop image or GIF"></image-slot></div>
         <div data-tile="small" data-ratio="1/1" data-span="1" style="grid-column:span 1;aspect-ratio:1/1;background:#25262b;border:1px solid rgba(247,247,245,.1);overflow:hidden;min-width:0"><image-slot id="g-booth-p1-2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7#lz=assets/img/6288d68d4e22.webp" shape="rect" placeholder="Drop image or GIF"></image-slot></div>
@@ -1751,6 +1868,11 @@ textarea.input { min-height: 90px; resize: vertical; }
         <h3 style="margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:-.02em"><span data-lang="en">Atacand Plus — Blood Pressure Care</span><span data-lang="ar" style="display:none">أتاكاند بلس — للسيطرة على ضغط الدم</span></h3>
       </div>
       <p style="margin:0 0 clamp(18px,2.4vw,26px);max-width:70ch;font-size:15.5px;color:#b4b4b7;line-height:1.7"><span data-lang="en">3 × 3 m scientific-bureau booth built around a 120/80 ring motif: curved yellow arch, blue product bays and a standing consultation counter.</span><span data-lang="ar" style="display:none">بوث مكتب علمي بقياس 3 × 3 م حول رمز 120/80 — قوس أصفر منحني، خزائن منتجات زرقاء، ومنصة استشارة واقفة.</span></p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 clamp(16px,2vw,22px)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">Footprint</span><span data-lang="ar" style="display:none">المساحة</span>:</strong> 3 × 3 m (9 m²)</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">CMF</span><span data-lang="ar" style="display:none">المواد</span>:</strong> <span data-lang="en">120/80 Yellow Arch · Cobalt Blue · Satin MDF</span><span data-lang="ar" style="display:none">قوس أصفر 120/80 · أزرق ملكي · خشب ساتان</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">Deliverables</span><span data-lang="ar" style="display:none">المخرجات</span>:</strong> <span data-lang="en">3D CAD Model · Fabrication Detail</span><span data-lang="ar" style="display:none">نموذج 3D CAD · تفاصيل تصنيع</span></span>
+      </div>
       <div data-project-grid="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:clamp(10px,1.4vw,18px)">
         <div data-tile="wide" data-ratio="16/9" data-span="2" style="grid-column:span 2;aspect-ratio:16/9;background:#25262b;border:1px solid rgba(247,247,245,.1);overflow:hidden;min-width:0"><image-slot id="g-booth-p2-1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7#lz=assets/img/d3e9c6247c1d.webp" shape="rect" placeholder="Drop image or GIF"></image-slot></div>
         <div data-tile="small" data-ratio="1/1" data-span="1" style="grid-column:span 1;aspect-ratio:1/1;background:#25262b;border:1px solid rgba(247,247,245,.1);overflow:hidden;min-width:0"><image-slot id="g-booth-p2-2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7#lz=assets/img/c64ee8a1165f.webp" shape="rect" placeholder="Drop image or GIF"></image-slot></div>
@@ -1768,6 +1890,11 @@ textarea.input { min-height: 90px; resize: vertical; }
         <h3 style="margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:-.02em"><span data-lang="en">Organic Beauty Booth</span><span data-lang="ar" style="display:none">بوث المنتجات الأورجانيك</span></h3>
       </div>
       <p style="margin:0 0 clamp(18px,2.4vw,26px);max-width:70ch;font-size:15.5px;color:#b4b4b7;line-height:1.7"><span data-lang="en">An exhibition booth for a brand of organic makeup and natural oils: an open modular frame, backlit product shelving and a central display plinth, with printed graphic panels that can be rebuilt for different fair layouts.</span><span data-lang="ar" style="display:none">بوث معرض لعلامة منتجات أورجانيك من المكياج والزيوت الطبيعية: هيكل معياري مفتوح، ورفوف عرض للمنتجات بإضاءة خلفية، ومنصة عرض مركزية، مع بانلات غرافيك مطبوعة قابلة لإعادة التركيب بمخططات معارض مختلفة.</span></p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 12px;margin:0 0 clamp(16px,2vw,22px)">
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">Type</span><span data-lang="ar" style="display:none">النوع</span>:</strong> <span data-lang="en">Modular Reconfigurable Stand</span><span data-lang="ar" style="display:none">جناح تركيبي معياري</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">CMF</span><span data-lang="ar" style="display:none">المواد</span>:</strong> <span data-lang="en">Natural Pine · Eco-board · Integrated LED</span><span data-lang="ar" style="display:none">خشب صنوبر طبيعي · ألواح بيئية · LED مدمج</span></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(247,247,245,.05);border:1px solid rgba(247,247,245,.1);border-radius:4px;font-size:12px;color:#c4c4c6"><strong style="color:#FF6A00;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase"><span data-lang="en">Deliverables</span><span data-lang="ar" style="display:none">المخرجات</span>:</strong> <span data-lang="en">Modular Layouts · Multi-fair Renders</span><span data-lang="ar" style="display:none">مخططات معيارية · رندرات متعددة</span></span>
+      </div>
       <div data-project-grid="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:clamp(10px,1.4vw,18px)">
         <div data-tile="wide" data-ratio="16/9" data-span="2" style="grid-column:span 2;aspect-ratio:16/9;background:#25262b;border:1px solid rgba(247,247,245,.1);overflow:hidden;min-width:0"><image-slot id="g-booth-p3-1" shape="rect" placeholder="Drop image or GIF" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7#lz=assets/img/83c8f119f232.webp"></image-slot></div>
         <div data-tile="small" data-ratio="1/1" data-span="1" style="grid-column:span 1;aspect-ratio:1/1;background:#25262b;border:1px solid rgba(247,247,245,.1);overflow:hidden;min-width:0"><image-slot id="g-booth-p3-2" shape="rect" placeholder="Drop image or GIF" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7#lz=assets/img/52119038029f.webp"></image-slot></div>
@@ -3421,10 +3548,10 @@ class Component extends DCLogic {
 
     q('[data-vp-icon="close"]').addEventListener('click', function(){ hide(true); });
     q('[data-vp-icon="fs"]').addEventListener('click', toggleFs);
-    q('[data-vp-nav="prev"]').addEventListener('click', function(){ goProject(-1); });
-    q('[data-vp-nav="next"]').addEventListener('click', function(){ goProject(1); });
-    q('[data-vp-pnav] [data-dir="prev"]').addEventListener('click', function(){ goProject(-1); });
-    q('[data-vp-pnav] [data-dir="next"]').addEventListener('click', function(){ goProject(1); });
+    q('[data-vp-nav="prev"]').addEventListener('click', function(){ goPrev(); });
+    q('[data-vp-nav="next"]').addEventListener('click', function(){ goNext(); });
+    q('[data-vp-pnav] [data-dir="prev"]').addEventListener('click', function(){ goPrev(); });
+    q('[data-vp-pnav] [data-dir="next"]').addEventListener('click', function(){ goNext(); });
     q('[data-vp-sheet-btn]').addEventListener('click', function(){
       view = sec; renderGrid(); vp.setAttribute('data-sheet', '');
       var on = q('[data-vp-pgrid] [aria-current="true"]'); if (on) on.focus();
@@ -3493,18 +3620,42 @@ class Component extends DCLogic {
     fs.title = fs.getAttribute('aria-label');
 
     var p = list[(idx - 1 + n) % n], nx = list[(idx + 1) % n];
+    var hasNextVid = ver < vids.length - 1;
+    var hasPrevVid = ver > 0;
     var sp = q('[data-vp-nav="prev"]'), sn = q('[data-vp-nav="next"]');
-    sp.hidden = sn.hidden = n < 2;
-    sp.title = T('Previous project: ', 'المشروع السابق: ') + text(p, 'client');
-    sn.title = T('Next project: ', 'المشروع التالي: ') + text(nx, 'client');
-    sp.setAttribute('aria-label', sp.title); sn.setAttribute('aria-label', sn.title);
+    sp.hidden = sn.hidden = (n < 2 && vids.length < 2);
+    if (hasNextVid) {
+      sn.title = T('Next video: ', 'المقطع التالي: ') + (ver + 2) + ' / ' + vids.length;
+    } else {
+      sn.title = T('Next project: ', 'المشروع التالي: ') + text(nx, 'client');
+    }
+    sn.setAttribute('aria-label', sn.title);
+    if (hasPrevVid) {
+      sp.title = T('Previous video: ', 'المقطع السابق: ') + ver + ' / ' + vids.length;
+    } else {
+      sp.title = T('Previous project: ', 'المشروع السابق: ') + text(p, 'client');
+    }
+    sp.setAttribute('aria-label', sp.title);
+
     var bp = q('[data-vp-pnav] [data-dir="prev"]'), bn = q('[data-vp-pnav] [data-dir="next"]');
-    bp.hidden = bn.hidden = n < 2;
-    bp.querySelector('small').textContent = T('← Previous', '→ السابق');
-    bp.querySelector('strong').textContent = text(p, 'client');
-    bn.querySelector('small').textContent = T('Next project →', 'المشروع التالي ←');
-    bn.querySelector('strong').textContent = text(nx, 'client');
-    bp.setAttribute('aria-label', sp.title); bn.setAttribute('aria-label', sn.title);
+    bp.hidden = bn.hidden = (n < 2 && vids.length < 2);
+    if (hasNextVid) {
+      bn.querySelector('small').textContent = T('Next video →', 'المقطع التالي ←');
+      bn.querySelector('strong').textContent = text(tile, 'client') + ' (' + (ver + 2) + ' / ' + vids.length + ')';
+    } else {
+      bn.querySelector('small').textContent = T('Next project →', 'المشروع التالي ←');
+      bn.querySelector('strong').textContent = text(nx, 'client');
+    }
+    bn.setAttribute('aria-label', sn.title);
+
+    if (hasPrevVid) {
+      bp.querySelector('small').textContent = T('← Previous video', '→ المقطع السابق');
+      bp.querySelector('strong').textContent = text(tile, 'client') + ' (' + ver + ' / ' + vids.length + ')';
+    } else {
+      bp.querySelector('small').textContent = T('← Previous', '→ السابق');
+      bp.querySelector('strong').textContent = text(p, 'client');
+    }
+    bp.setAttribute('aria-label', sp.title);
     q('[data-vp-sheet-btn] span').textContent = T('Projects', 'المشاريع');
     q('[data-vp-sheet-close]').textContent = T('Done', 'تم');
     q('[data-t="ph"]').textContent = T('All projects', 'كل المشاريع');
@@ -3551,7 +3702,7 @@ class Component extends DCLogic {
     frame.appendChild(f);
   }
 
-  // when a video ends, the project's next video plays
+  // when a video ends, the project's next video plays; if last video, advances to next project
   window.addEventListener('message', function(e){
     if (!iframe || e.source !== iframe.contentWindow) return;
     var d = e.data;
@@ -3560,8 +3711,33 @@ class Component extends DCLogic {
     var st = d.event === 'onStateChange' ? d.info : (d.event === 'infoDelivery' && d.info ? d.info.playerState : undefined);
     if (st !== 0 || iframe._ended) return;
     iframe._ended = true;
-    if (ver < videosOf(cur()).length - 1) { ver++; render(); }
+    goNext();
   });
+
+  function goNext(){
+    var vids = videosOf(cur());
+    if (ver < vids.length - 1) {
+      ver++;
+      render();
+    } else {
+      goProject(1);
+    }
+  }
+
+  function goPrev(){
+    if (ver > 0) {
+      ver--;
+      render();
+    } else {
+      var n = sections[sec].tiles.length;
+      var prevTileIdx = (idx - 1 + n) % n;
+      var prevVids = videosOf(sections[sec].tiles[prevTileIdx]);
+      idx = prevTileIdx;
+      ver = Math.max(0, prevVids.length - 1);
+      view = sec;
+      render();
+    }
+  }
 
   function goProject(d){ var n = sections[sec].tiles.length; idx = (idx + d + n) % n; ver = 0; view = sec; render(); }
   function goVersion(d){ var n = videosOf(cur()).length; if (n < 2) return; ver = (ver + d + n) % n; render(); }
@@ -3605,10 +3781,10 @@ class Component extends DCLogic {
     if (!vp || !vp.hasAttribute('data-open')) return;
     if (e.key === 'Escape') { if (vp.hasAttribute('data-sheet')) closeSheet(); else hide(true); return; }
     if (vp.hasAttribute('data-sheet')) return;
-    if (e.key === 'ArrowRight') { e.preventDefault(); goProject(isAr() ? -1 : 1); }
-    else if (e.key === 'ArrowLeft') { e.preventDefault(); goProject(isAr() ? 1 : -1); }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); goVersion(1); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); goVersion(-1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); if (isAr()) goPrev(); else goNext(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); if (isAr()) goNext(); else goPrev(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); goProject(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); goProject(-1); }
     else if (e.key === 'f' || e.key === 'F') toggleFs();
   });
 
@@ -3875,4 +4051,183 @@ class Component extends DCLogic {
   });
 })();
 </script>
+
+<script id="al-level1-script">
+(function () {
+  'use strict';
+
+  // 1. Kinetic Counter Animation for Stats (+4 and +17)
+  function initCounters() {
+    var statEls = document.querySelectorAll('dt');
+    var targets = [];
+    statEls.forEach(function (dt) {
+      var text = dt.textContent.trim();
+      var m = /^(\+?)(\d+)(\+?)$/.exec(text);
+      if (m) {
+        var num = parseInt(m[2], 10);
+        if (num > 0) {
+          targets.push({
+            el: dt,
+            target: num,
+            prefix: m[1] || (text.startsWith('+') ? '+' : ''),
+            suffix: m[3] || (text.endsWith('+') ? '+' : ''),
+            started: false
+          });
+        }
+      }
+    });
+
+    if (!targets.length) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          targets.forEach(function (item) {
+            if (item.started) return;
+            if (entry.target.contains(item.el) || entry.target === item.el) {
+              item.started = true;
+              animateCount(item);
+            }
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+
+    targets.forEach(function (item) {
+      var parent = item.el.closest('dl') || item.el.parentElement;
+      observer.observe(parent);
+    });
+
+    function animateCount(item) {
+      var duration = 1600; // ms
+      var startTime = performance.now();
+      var startVal = 0;
+      var endVal = item.target;
+
+      function update(currentTime) {
+        var elapsed = currentTime - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        // Exponential ease-out
+        var easeOut = 1 - Math.pow(1 - progress, 3.5);
+        var current = Math.floor(startVal + (endVal - startVal) * easeOut);
+        
+        item.el.textContent = (item.prefix ? item.prefix : '') + current + (item.suffix ? item.suffix : '');
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          item.el.textContent = (item.prefix ? item.prefix : '') + endVal + (item.suffix ? item.suffix : '');
+        }
+      }
+      requestAnimationFrame(update);
+    }
+  }
+
+  // 2. Atmospheric Flashlight Glow in Darkroom
+  function initAmbientGlow() {
+    if (window.matchMedia && !window.matchMedia('(pointer: fine)').matches) return;
+    var glow = document.createElement('div');
+    glow.id = 'al-ambient-glow';
+    document.body.appendChild(glow);
+
+    var targetX = -500, targetY = -500, currentX = -500, currentY = -500;
+    var visible = false;
+
+    window.addEventListener('mousemove', function (e) {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!visible) {
+        visible = true;
+        glow.style.opacity = '1';
+      }
+    });
+
+    document.addEventListener('mouseleave', function () {
+      visible = false;
+      glow.style.opacity = '0';
+    });
+    document.addEventListener('mouseenter', function () {
+      visible = true;
+      glow.style.opacity = '1';
+    });
+
+    function loop() {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      glow.style.left = currentX + 'px';
+      glow.style.top = currentY + 'px';
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  // 3. Precise Scroll Position Memory & Backward Restoration
+  function initScrollRestoration() {
+    var scrollTimer = null;
+    window.addEventListener('scroll', function () {
+      if (!location.hash || location.hash.indexOf('#g/') !== 0) {
+        if (scrollTimer) clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+          try {
+            sessionStorage.setItem('al_last_main_y', String(window.scrollY));
+          } catch (e) {}
+        }, 80);
+      }
+    }, { passive: true });
+
+    // When clicking any link navigating to a subpage (e.g. work/orca.html, work/vanilly.html)
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a');
+      if (a) {
+        var href = a.getAttribute('href') || '';
+        if (href.indexOf('work/') >= 0 || a.hasAttribute('data-cs-card')) {
+          try {
+            sessionStorage.setItem('al_last_main_y', String(window.scrollY));
+            sessionStorage.setItem('al_return_from_sub', '1');
+          } catch (err) {}
+        }
+      }
+    });
+
+    // Check and restore scroll position on page load or pageshow (BFCache back)
+    function restoreSavedScroll() {
+      try {
+        var returnFlag = sessionStorage.getItem('al_return_from_sub');
+        var savedY = sessionStorage.getItem('al_last_main_y');
+        if (returnFlag && savedY) {
+          sessionStorage.removeItem('al_return_from_sub');
+          var y = parseFloat(savedY);
+          if (!isNaN(y) && y > 20) {
+            var doScroll = function () {
+              window.scrollTo({ top: y, behavior: 'instant' });
+            };
+            doScroll();
+            requestAnimationFrame(doScroll);
+            [20, 60, 150, 300, 600, 1000].forEach(function (ms) { setTimeout(doScroll, ms); });
+          }
+        }
+      } catch (err) {}
+    }
+
+    restoreSavedScroll();
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) restoreSavedScroll();
+    });
+  }
+
+  // Initialize once DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      initCounters();
+      initAmbientGlow();
+      initScrollRestoration();
+    });
+  } else {
+    initCounters();
+    initAmbientGlow();
+    initScrollRestoration();
+  }
+})();
+</script>
+
 </body></html>

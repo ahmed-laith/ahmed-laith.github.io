@@ -207,3 +207,9 @@ html[lang="ar"] .cs-footer { letter-spacing: 0; font-size: 13px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Desktop Image Containment (Clean Viewport Polish) */
+@media (min-width: 1024px) {
+  .cs-cover img { max-height: 72vh !important; object-fit: contain !important; }
+  .cs-step-media img { max-height: 72vh !important; object-fit: contain !important; }
+}

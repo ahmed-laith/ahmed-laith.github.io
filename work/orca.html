@@ -25,6 +25,60 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/5581706d9374.png">
 <link rel="apple-touch-icon" href="../assets/img/e379c3d3cd17.png">
 <link rel="stylesheet" href="../assets/case/case.css">
+<style id="orca-story-style">
+/* === LEVEL 2: CINEMATIC STORYTELLING (ORCA COFFEE MACHINE) === */
+
+/* Hero Cover: Ambient Studio Lighting Backlight Glow */
+.cs-cover {
+  position: relative;
+  overflow: visible !important;
+}
+.cs-cover::before {
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  width: 78%;
+  height: 68%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.08) 0%, rgba(247, 247, 245, 0.02) 48%, transparent 72%);
+  filter: blur(52px);
+  pointer-events: none;
+  z-index: 0;
+}
+.cs-cover img {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cs-cover:hover img {
+  transform: scale(1.008);
+}
+
+/* Process Steps Elevation and Darkroom Frame */
+.cs-step-media figure {
+  position: relative;
+  background: #141416;
+  border: 1px solid rgba(247, 247, 245, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.cs-step-media figure:hover {
+  border-color: rgba(255, 106, 0, 0.35);
+  transform: translateY(-2px);
+}
+.cs-step-media figcaption {
+  padding: 10px 16px;
+  font-size: 12.5px;
+  color: #a3a3a6;
+  background: rgba(20, 20, 22, 0.96);
+  border-top: 1px solid rgba(247, 247, 245, 0.06);
+}
+html[lang="ar"] .cs-step-media figcaption {
+  text-align: start;
+}
+</style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "CreativeWork", "name": "Orca Coffee Machine", "alternateName": "ماكينة قهوة الأوركا", "description": "A drip coffee machine designed from zero — from the first sketches through form and proportion studies to modelling and final rendering.", "image": "https://ahmed-laith.github.io/assets/og/orca.jpg", "url": "https://ahmed-laith.github.io/work/orca.html", "inLanguage": ["en", "ar"], "creator": {"@type": "Person", "name": "Ahmed Laith", "url": "https://ahmed-laith.github.io/"}}</script>
 </head>
 <body>
@@ -55,6 +109,7 @@
         <div><dt><span data-lang="en">Product</span><span data-lang="ar">المنتج</span></dt><dd><span data-lang="en">Drip coffee machine</span><span data-lang="ar">ماكينة قهوة بالتنقيط</span></dd></div>
         <div><dt><span data-lang="en">Discipline</span><span data-lang="ar">المجال</span></dt><dd><span data-lang="en">Industrial &amp; product design</span><span data-lang="ar">التصميم الصناعي وتصميم المنتجات</span></dd></div>
         <div><dt><span data-lang="en">Scope</span><span data-lang="ar">النطاق</span></dt><dd><span data-lang="en">Sketches, 3D model, renders</span><span data-lang="ar">سكتشات، نموذج ثلاثي الأبعاد، رندرات</span></dd></div>
+        <div><dt><span data-lang="en">Design Concept</span><span data-lang="ar">مفهوم التصميم</span></dt><dd><span data-lang="en">Orca biomorphic form &amp; balance</span><span data-lang="ar">هيئة وتوازن حوت الأوركا</span></dd></div>
       </dl>
     </section>
 
@@ -65,18 +120,19 @@
 
     <section class="cs-section" aria-labelledby="process">
       <div class="cs-section-head"><h2 id="process"><span data-lang="en">The process</span><span data-lang="ar">خطوات العمل</span></h2></div>
+      
       <ol class="cs-steps">
-        <li class="cs-step">
+        <li class="cs-step" id="step-01">
           <div class="cs-step-text"><span class="cs-step-num">01</span><h3><span data-lang="en">Sketches, form and layout</span><span data-lang="ar">سكتشات، شكل، وتوزيع داخلي</span></h3><p><span data-lang="en">The form starts from simple volumes and the orca’s silhouette. The same sheet places the water tank, heater, pump and water flow, so the shell is drawn around the parts it has to hold.</span><span data-lang="ar">يبدأ الشكل من كتل بسيطة ومن هيئة حوت الأوركا. وفي الورقة نفسها يتحدد مكان خزان الماء والسخان والمضخة ومسار الماء، حتى يُرسم الغلاف الخارجي حول القطع التي يجب أن يتسع لها.</span></p></div>
-          <div class="cs-step-media"><figure><img src="../assets/img/de3c4ffd0f24.webp" width="603" height="804" alt="Sketch sheet: volume studies, orca silhouettes, side profiles and the internal layout of tank, heater and pump" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media"><figure><img src="../assets/img/de3c4ffd0f24.webp" width="603" height="804" alt="Sketch sheet: volume studies, orca silhouettes, side profiles and the internal layout of tank, heater and pump" loading="lazy" decoding="async"><figcaption><span data-lang="en">Ideation Sketches · Internal Component Packaging</span><span data-lang="ar">سكتشات الأفكار · التوزيع الميكانيكي الداخلي</span></figcaption></figure></div>
         </li>
-        <li class="cs-step">
+        <li class="cs-step" id="step-02">
           <div class="cs-step-text"><span class="cs-step-num">02</span><h3><span data-lang="en">Modelled and rendered in the studio</span><span data-lang="ar">النمذجة والرندر في الاستوديو</span></h3><p><span data-lang="en">The 3D model is rendered on white: a clear water tank with cup markings, a black-and-white body taken from the orca, and a gold control panel.</span><span data-lang="ar">النموذج ثلاثي الأبعاد مُرندر على خلفية بيضاء: خزان ماء شفاف بعلامات الأكواب، وجسم بالأبيض والأسود مأخوذ من الأوركا، ولوحة تحكم ذهبية.</span></p></div>
-          <div class="cs-step-media is-pair"><figure><img src="../assets/img/6927217e3453.webp" width="486" height="572" alt="Side view render with the clear water tank and cup markings" loading="lazy" decoding="async"></figure><figure><img src="../assets/img/7e4d6fdf434c.webp" width="486" height="572" alt="Front view render with the gold control panel and glass carafe" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media is-pair"><figure><img src="../assets/img/6927217e3453.webp" width="486" height="572" alt="Side view render with the clear water tank and cup markings" loading="lazy" decoding="async"><figcaption><span data-lang="en">Profile Angle · Graduated Water Reservoir</span><span data-lang="ar">المسقط الجانبي · خزان الماء المدرج</span></figcaption></figure><figure><img src="../assets/img/7e4d6fdf434c.webp" width="486" height="572" alt="Front view render with the gold control panel and glass carafe" loading="lazy" decoding="async"><figcaption><span data-lang="en">Front Angle · Gold Interface &amp; Glass Carafe</span><span data-lang="ar">المسقط الأمامي · لوحة التحكم الذهبية والإبريق</span></figcaption></figure></div>
         </li>
-        <li class="cs-step">
+        <li class="cs-step" id="step-03">
           <div class="cs-step-text"><span class="cs-step-num">03</span><h3><span data-lang="en">As an illustration</span><span data-lang="ar">كرسمة توضيحية</span></h3><p><span data-lang="en">The final view, redrawn as a hand-rendered illustration.</span><span data-lang="ar">اللقطة النهائية نفسها، معاد رسمها كرسم توضيحي يدوي.</span></p></div>
-          <div class="cs-step-media"><figure><img src="../assets/img/30bc4ba704bc.webp" width="830" height="652" alt="Hand-rendered illustration of the Orca coffee machine" loading="lazy" decoding="async"></figure></div>
+          <div class="cs-step-media"><figure><img src="../assets/img/30bc4ba704bc.webp" width="830" height="652" alt="Hand-rendered illustration of the Orca coffee machine" loading="lazy" decoding="async"><figcaption><span data-lang="en">Technical Concept Illustration</span><span data-lang="ar">الرسم التوضيحي المفاهيمي اليدوي</span></figcaption></figure></div>
         </li>
       </ol>
     </section>
@@ -101,5 +157,6 @@
     <span><span data-lang="en">Baghdad, Iraq</span><span data-lang="ar">بغداد، العراق</span></span>
   </footer>
   <script src="../assets/case/case.js"></script>
+
 </body>
 </html>

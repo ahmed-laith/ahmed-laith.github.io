@@ -25,6 +25,15 @@
   apply(/[?&]lang=ar(&|$)/.test(location.search) ? 'ar' : 'en');
 
   document.addEventListener('click', function (e) {
+    var backBtn = e.target.closest && e.target.closest('.cs-back');
+    if (backBtn) {
+      try { sessionStorage.setItem('al_return_from_sub', '1'); } catch (err) {}
+      if (window.history.length > 1) {
+        e.preventDefault();
+        window.history.back();
+        return;
+      }
+    }
     var b = e.target.closest && e.target.closest('[data-lang-btn]');
     if (b) {
       var lang = b.getAttribute('data-lang-btn');
