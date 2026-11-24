@@ -167,37 +167,32 @@
             border-color: var(--orange);
             box-shadow: 0 0 0 2px var(--orange-dim);
         }
-        .filter-tabs-wrapper {
-            width: 100%;
-            overflow: hidden;
-        }
         .filter-tabs {
             display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding-bottom: 4px;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            width: 100%;
         }
-        .filter-tabs::-webkit-scrollbar { display: none; }
         .tab-btn {
             background: var(--surface);
             color: var(--dim-light);
             border: 1px solid var(--border);
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             font-weight: 700;
             cursor: pointer;
-            flex-shrink: 0;
             transition: all 0.15s ease;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .tab-btn:hover, .tab-btn.active {
             background: #222222;
             color: var(--text);
             border-color: var(--orange);
+            box-shadow: 0 0 8px rgba(255, 106, 0, 0.25);
         }
 
         /* Grid Layout */
@@ -442,12 +437,21 @@
                 padding: 10px 14px;
             }
             .filter-tabs {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
                 gap: 6px;
-                padding: 2px 0 6px 0;
+                width: 100%;
             }
             .tab-btn {
-                padding: 7px 14px;
-                font-size: 0.82rem;
+                padding: 8px 2px;
+                font-size: 0.76rem;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 42px;
+                border-radius: 8px;
+                line-height: 1.25;
             }
             .grid {
                 grid-template-columns: 1fr;
@@ -515,7 +519,7 @@
             </div>
             <div class="header-chips">
                 <span class="chip">🎯 <strong>52</strong> فرصة مطابقة</span>
-                <span class="chip">🕒 آخر فحص: <strong>2026-11-24 20:55</strong></span>
+                <span class="chip">🕒 آخر فحص: <strong>2026-11-24 21:21</strong></span>
                 <a href="https://ahmed-laith.github.io/" target="_blank" class="chip chip-link">🌐 معرض أعمالك ↗</a>
             </div>
         </header>
@@ -524,15 +528,13 @@
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="🔍 ابحث في المسمى، الشركة، أو المدينة..." oninput="searchJobs()">
             </div>
-            <div class="filter-tabs-wrapper">
-                <div class="filter-tabs">
-                    <button class="tab-btn active" onclick="filterCategory('all', this)">الكل (52)</button>
-                    <button class="tab-btn" onclick="filterCategory('3d', this)">3D & CGI (21)</button>
-                    <button class="tab-btn" onclick="filterCategory('motion', this)">موشن ومونتاج (15)</button>
-                    <button class="tab-btn" onclick="filterCategory('design', this)">جرافيك (16)</button>
-                    <button class="tab-btn" onclick="filterCategory('linkedin', this)">LinkedIn (29)</button>
-                    <button class="tab-btn" onclick="filterCategory('telegram', this)">تليجرام (23)</button>
-                </div>
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="filterCategory('all', this)">الكل (52)</button>
+                <button class="tab-btn" onclick="filterCategory('3d', this)">3D & CGI (21)</button>
+                <button class="tab-btn" onclick="filterCategory('motion', this)">موشن ومونتاج (15)</button>
+                <button class="tab-btn" onclick="filterCategory('design', this)">جرافيك (16)</button>
+                <button class="tab-btn" onclick="filterCategory('linkedin', this)">LinkedIn (29)</button>
+                <button class="tab-btn" onclick="filterCategory('telegram', this)">تليجرام (23)</button>
             </div>
         </div>
 
@@ -3190,6 +3192,9 @@ https://ahmed-laith.github.io/
         </div>
         
         </main>
+        <div id="noResults" style="display:none; text-align:center; padding:40px 14px; color:#888; font-size:0.95rem;">
+            🔍 لا توجد وظائف مطابقة لهذا القسم حالياً.
+        </div>
     </div>
 
     <script>
@@ -3209,6 +3214,7 @@ https://ahmed-laith.github.io/
         function applyFilters() {
             const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.job-card');
+            let visibleCount = 0;
 
             cards.forEach(card => {
                 const platform = card.getAttribute('data-platform');
@@ -3228,10 +3234,16 @@ https://ahmed-laith.github.io/
 
                 if (matchFilter && matchSearch) {
                     card.style.display = 'flex';
+                    visibleCount++;
                 } else {
                     card.style.display = 'none';
                 }
             });
+
+            const noRes = document.getElementById('noResults');
+            if (noRes) {
+                noRes.style.display = (visibleCount === 0) ? 'block' : 'none';
+            }
         }
 
         function copyPitch(pitchId, btn) {
