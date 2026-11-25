@@ -1,6 +1,4 @@
 User-agent: *
-Disallow: /jobs.html
-Disallow: /jobs
 Allow: /
 
 Sitemap: https://ahmed-laith.github.io/sitemap.xml
