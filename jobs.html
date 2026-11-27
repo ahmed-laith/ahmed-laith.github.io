@@ -105,6 +105,26 @@
             border-color: #444;
             color: #888;
         }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-settings {
+            background: #181818;
+            color: var(--dim-light);
+            border: 1px solid var(--border-hover);
+            padding: 8px 11px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-settings:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
         .spin {
             animation: spin 1s linear infinite;
             display: inline-block;
@@ -513,9 +533,12 @@
                     <h1>رادار الوظائف الذكي</h1>
                     <span class="header-sub">أحمد ليث · CGI وموشن جرافيك ومونتير فيديو</span>
                 </div>
-                <button id="refreshBtn" class="btn-refresh" onclick="triggerLiveRefresh()">
-                    <span id="refreshIcon" class="refresh-icon">🔄</span> <span id="refreshText">تحديث فوري للوظائف</span>
-                </button>
+                <div class="header-actions">
+                    <button id="refreshBtn" class="btn-refresh" onclick="triggerLiveRefresh()">
+                        <span id="refreshIcon" class="refresh-icon">🔄</span> <span id="refreshText">تحديث فوري للوظائف</span>
+                    </button>
+                    <button id="radarSettingsBtn" class="btn-settings" type="button" onclick="configureRadarConnection()" title="إعدادات خادم الرادار المحلي">⚙️</button>
+                </div>
             </div>
             <div class="header-chips">
                 <span class="chip">🎯 <strong>44</strong> فرصة مطابقة</span>
@@ -2853,32 +2876,99 @@ https://ahmed-laith.github.io/
             });
         }
 
+        function isLocalServerPage() {
+            return window.location.protocol === 'http:' && Boolean(window.location.hostname);
+        }
+
+        function isMobileDevice() {
+            return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+        }
+
+        function getRadarSettings() {
+            return {
+                serverUrl: isLocalServerPage() ? window.location.origin : '',
+                token: (localStorage.getItem('radar_token') || '').trim()
+            };
+        }
+
+        function configureRadarConnection(promptTokenOnly = false) {
+            if (window.location.hostname === 'ahmed-laith.github.io' && isMobileDevice()) {
+                alert('للتحديث من الموبايل افتح http://<عنوان الحاسوب>:8888 على نفس الواي فاي\n(يمكنك معرفة العنوان الحالي من ملف radar_run.log على الحاسوب).');
+                return false;
+            }
+            const cur = getRadarSettings();
+            const tokInput = prompt(
+                'أدخل رمز X-Radar-Token (من ملف radar_secret.json على الحاسوب):',
+                cur.token
+            );
+            if (tokInput === null) return false;
+            const cleanTok = tokInput.trim();
+            if (cleanTok) {
+                localStorage.setItem('radar_token', cleanTok);
+                return true;
+            }
+            localStorage.removeItem('radar_token');
+            return false;
+        }
+
+        function buildRefreshEndpoints() {
+            const eps = [];
+            if (isLocalServerPage()) {
+                eps.push(`${window.location.origin}/api/refresh`, '/api/refresh');
+            }
+            const host = window.location.hostname;
+            const proto = window.location.protocol;
+            if (host === 'localhost' || host === '127.0.0.1' || proto === 'file:' || (host === 'ahmed-laith.github.io' && !isMobileDevice())) {
+                eps.push('http://localhost:8888/api/refresh', 'http://127.0.0.1:8888/api/refresh');
+            }
+            return [...new Set(eps)];
+        }
+
         async function triggerLiveRefresh() {
             const btn = document.getElementById('refreshBtn');
             const icon = document.getElementById('refreshIcon');
             const text = document.getElementById('refreshText');
             if (!btn) return;
+
+            if (window.location.hostname === 'ahmed-laith.github.io' && isMobileDevice()) {
+                configureRadarConnection();
+                return;
+            }
+
+            let cfg = getRadarSettings();
+            if (!cfg.token) {
+                if (!configureRadarConnection(true)) return;
+                cfg = getRadarSettings();
+            }
+            const endpoints = buildRefreshEndpoints();
+            if (!endpoints.length) {
+                configureRadarConnection();
+                return;
+            }
+
             btn.disabled = true;
             if (icon) icon.classList.add('spin');
             if (text) text.innerText = 'جاري فحص القنوات والمواقع الآن... (15-25 ثانية)';
 
-            const endpoints = [
-                '/api/refresh',
-                'http://localhost:8888/api/refresh',
-                'http://127.0.0.1:8888/api/refresh'
-            ];  // on the phone the page is opened from the local server itself, so '/api/refresh' covers it
-
             let success = false;
+            let authError = false;
             for (const ep of endpoints) {
                 try {
                     const controller = new AbortController();
                     const timeoutId = setTimeout(() => controller.abort(), 95000);
                     const res = await fetch(ep, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Radar-Token': cfg.token
+                        },
                         signal: controller.signal
                     });
                     clearTimeout(timeoutId);
+                    if (res.status === 401) {
+                        authError = true;
+                        break;
+                    }
                     if (res.ok) {
                         success = true;
                         if (icon) icon.classList.remove('spin');
@@ -2897,8 +2987,12 @@ https://ahmed-laith.github.io/
                 btn.disabled = false;
                 if (icon) icon.classList.remove('spin');
                 if (text) text.innerText = 'تحديث فوري للوظائف';
-                alert('تعذر الاتصال بخادم التحديث المحلي.
-يرجى التأكد من تشغيل خادم الرادار عبر أيقونة "تشغيل خادم الرادار"، أو انتظر موعد الفحص التلقائي القادم.');
+                if (authError) {
+                    alert('رمز التحقق X-Radar-Token غير صحيح. يرجى تحديثه من زر الإعدادات ⚙️.');
+                    configureRadarConnection(true);
+                } else {
+                    alert('تعذر الاتصال بخادم التحديث المحلي.\nللتحديث من الموبايل افتح http://<عنوان الحاسوب>:8888 على نفس الواي فاي.');
+                }
             }
         }
     </script>
